@@ -1,0 +1,15 @@
+{
+  "name": "phase3",
+  "version": "1.0.0",
+  "description": "projectROS phase3 Frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "arianne coyco",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.10",
+    "live-server": "^1.2.0"
+  }
+}
