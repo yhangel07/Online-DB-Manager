@@ -1,0 +1,12 @@
+{
+  "name": "odb",
+  "version": "1.0.0",
+  "description": "Online Database Manager",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Arianne Coyco",
+  "license": "ISC"
+}

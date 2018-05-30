@@ -1,0 +1,17 @@
+.sprint_bg_color{
+    background-color: #FEE100;
+}
+
+/* Customize Spacing */
+.mt-10p{
+    margin-top: 10%;
+}
+.mb-10p{
+    margin-bottom: 10%;
+}
+.ml-10p{
+    margin-left: 10%;
+}
+.mr-10p{
+    margin-right: 10%;
+}

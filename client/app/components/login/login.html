@@ -1,0 +1,33 @@
+<div class="container" ng-controller="LoginCtrl">
+    <div class="col-md-6 mx-auto mt-10p">
+        <div class="card" >
+            <div class="card-header sprint_bg_color">
+                <img class="card-img-top" src="../../../assets/img/sprint logo.png" alt="Sprint Logo">
+            </div>
+            <div class="card-block m-3">
+                <form name="loginForm" ng-submit="loginFormSubmit()">
+                    <div class="form-control-sm">
+                        <label>Username (ADID)</label>
+                        <input type="text" class="form-control" id="loginUsername" name="loginUsername" 
+                            ng-model="login.username" placeholder="Ex. ab54321" required />
+                    </div>
+                    <div class="form-control-sm">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="loginPassword" name="loginPassword"
+                            ng-model="login.password" placeholder="ODM Password" required />
+                    </div>
+                    <button class="btn btn-sm btn-secondary float-right mt-2" type="submit"
+                        ng-disabled="loginForm.$invalid">
+                        Sign in
+                    </button>
+                </form>
+            </div>
+            <div class="card-block m-2">
+                <p class="text-sm-right">
+                    Trouble Signing in? <a href="">Contact Support</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
