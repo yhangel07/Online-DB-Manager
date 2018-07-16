@@ -8,5 +8,10 @@
     "start": "node server.js"
   },
   "author": "Arianne Coyco",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "msnodesqlv8": "^0.4.14",
+    "mssql": "^4.1.0"
+  }
 }
