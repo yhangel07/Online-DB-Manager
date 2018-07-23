@@ -20,9 +20,10 @@
 
     <body ng-controller="MainCtrl">
         <div id="wrapper">
-            <div ng-include src="'/app/components/navigation/navigation.html'"></div>
-            
-    
+            <div ng-include="'/app/components/navigation/navigation.html'"></div>
+            <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div ng-include="'/app/components/header and footer/headerFooter.html'"></div>
+            </div>
             <!-- <div ng-include="'/app/components/dashboard/dashboard.html'"></div> -->
     
         </div>
@@ -39,7 +40,7 @@
     <!-- Controllers -->
     <script type="text/javascript" src="./app/components/mainController.js"></script>
     <script type="text/javascript" src="./app/components/navigation/navigationController.js"></script>
-
+    <script type="text/javascript" src="./app/components/header and footer/headerFooterController.js"></script>
     <script type="text/javascript" src="./app/components/login/loginController.js"></script>
 
     <!-- Plugin scripts -->
@@ -77,6 +78,12 @@
 
     <script>
             $(document).ready(function() {
+
+                $(".nav a").on("click", function(){
+                    $(".nav").find(".active").removeClass("active");
+                    $(this).parent().addClass("active");
+                });
+
                 setTimeout(function() {
                     toastr.options = {
                         closeButton: true,
