@@ -6,7 +6,6 @@
  */
 
 $(document).ready(function () {
-
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
         $('body').addClass('body-small')
@@ -84,10 +83,15 @@ $(document).ready(function () {
     //});
 
     // Minimalize menu
-    $('.navbar-minimalize').click(function () {
+    // $('.navbar-minimalize').click(function () {
+    //     $("body").toggleClass("mini-navbar");
+    //     SmoothlyMenu();
+
+    // });
+    $('body').on('click', '.navbar-minimalize', function() {
         $("body").toggleClass("mini-navbar");
         SmoothlyMenu();
-
+        
     });
 
     // Tooltips demo
