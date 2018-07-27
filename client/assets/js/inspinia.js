@@ -83,16 +83,16 @@ $(document).ready(function () {
     //});
 
     // Minimalize menu
-    // $('.navbar-minimalize').click(function () {
-    //     $("body").toggleClass("mini-navbar");
-    //     SmoothlyMenu();
-
-    // });
-    $('body').on('click', '.navbar-minimalize', function() {
+    $('.navbar-minimalize').click(function () {
         $("body").toggleClass("mini-navbar");
         SmoothlyMenu();
-        
+
     });
+    // $('body').on('click', '.navbar-minimalize', function() {
+    //     $("body").toggleClass("mini-navbar");
+    //     SmoothlyMenu();
+        
+    // });
 
     // Tooltips demo
     $('.tooltip-demo').tooltip({
