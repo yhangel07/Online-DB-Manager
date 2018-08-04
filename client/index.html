@@ -22,8 +22,12 @@
             
         <div id="wrapper">
             <div ng-include="'/app/components/navigation/navigation.html'"></div>
-            <div ng-include="'/app/components/header and footer/headerFooter.html'"></div>            
-            
+            <div ng-include="'/app/components/modals/modals.html'"></div>
+            <div id="page-wrapper" class="gray-bg dashbard-1">    
+                <div ng-include="'/app/components/header and footer/header.html'"></div>
+                <div ng-include="'/app/components/dashboard/dashboard.html'"></div>
+                <div ng-include="'/app/components/header and footer/footer.html'"></div>
+            </div>      
 
         </div>
     </body>
@@ -78,7 +82,7 @@
     <!-- Toastr -->
     <script src="./assets/js/plugins/toastr/toastr.min.js"></script>
 
-    <script>
+    <!-- <script>
             $(document).ready(function() {
                 
 
@@ -95,7 +99,7 @@
 
             });
 
-    </script>
+    </script> -->
     
 
 </html>
