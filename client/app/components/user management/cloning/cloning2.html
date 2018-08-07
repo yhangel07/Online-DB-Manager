@@ -1,4 +1,4 @@
-<div class="row white-bg p-lg">
+<div class="row white-bg p-lg" ng-controller="CloningCtrl">
     <h2>Cloning User's server roles and privileges</h2>
 
     <div class="row row-eq-height m">
@@ -28,27 +28,19 @@
                     <div class="col-md-7">
                         <h3>Mirror User(s):</h3>
                     </div>
-                    <div class="col-md-5 text-right">
+                    <div class="col-md-5 text-right" ng-click="addInputInMirror()">
                         <h4 class="add-input-text">ADD <i class="fa fa-plus-square-o fa-lg"></i></h4>
                     </div>
                 </div>
                 <div class="widget-text-box">
-                    <div class="input-group has-success m-xs">
-                        <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary">
-                                <i class="fa fa-search fa-lg"></i>
-                            </button>
-                        </span>
-                    </div>
-                    <div class="input-group has-success m-xs">
+                    <div class="input-group has-success m-xs" ng-repeat="inputInMirror in inputsInMirror">
                             <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-primary">
                                     <i class="fa fa-search fa-lg"></i>
                                 </button>
                             </span>
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,6 +53,6 @@
         </div>
     </div>
     <div class="row text-center m-b-lg">
-        <button class="btn btn-warning">Start Cloning</button>
+        <button class="btn btn-warning" ng-disabled="true">Start Cloning</button>
     </div>
 </div>
