@@ -1,51 +1,58 @@
-<div class="row white-bg dashboard-header">
+<div class="row white-bg p-lg" ng-controller="CloningCtrl">
     <h2>Cloning User's server roles and privileges</h2>
-    <div class="row">
-        <div class="m-t-lg col-md-3 col-md-offset-4">
-            <div class="input-group has-warning col-md-offset-3">
-                <input type="text" class="form-control" placeholder="ADID to clone">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-warning">
-                        <i class="fa fa-search fa-lg"></i>
-                    </button>
-                </span>
-            </div>
-            <div class="col-md-offset-4">
-                <div class="radio i-checks">
-                    <label>
-                        <input type="radio" value="fullCloning" name="cloningOption" checked>
-                        Full Cloning
-                        <sup><i class="fa fa-question-circle"></i></sup>
-                    </label>
+
+    <div class="row row-eq-height m">
+        <div class="col-md-5 v-align">
+            <div class="widget yellow-bg" id="userOrigin">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3>User to clone</h3>
+                    </div>
                 </div>
-                <div class="radio i-checks">
-                    <label>
-                        <input type="radio" value="customizedCloning" name="cloningOption">
-                        Customized Cloning
-                        <sup><i class="fa fa-question-circle"></i></sup>
-                    </label>
+                <div class="input-group has-warning widget-text-box m-sm">
+                    <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-warning">
+                            <i class="fa fa-search fa-lg"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 text-center v-align">
+            <i class="fa fa-angle-double-right fa-5x"></i>
+        </div>
+        <div class="col-md-5" id="userMirror">
+            <div class="widget navy-bg">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h3>Mirror User(s):</h3>
+                    </div>
+                    <div class="col-md-5 text-right" ng-click="addInputInMirror()">
+                        <h4 class="add-input-text">ADD <i class="fa fa-plus-square-o fa-lg"></i></h4>
+                    </div>
+                </div>
+                <div class="widget-text-box">
+                    <div class="input-group has-success m-xs" ng-repeat="inputInMirror in inputsInMirror">
+                            <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fa fa-search fa-lg"></i>
+                                </button>
+                            </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-offset-4">
-        <div class="row m-t">
-            <div class="col-md-4">
-                <h3>Mirror User(s):</h3>
-            </div>
-            <div class="col-md-2 text-right">
-                <h4 class="btn btn-link">ADD <i class="fa fa-plus-square-o fa-lg"></i></h4>
-            </div>
+    <div class="row">
+        <div class="checkbox text-center">
+            <label>
+                <input type="checkbox">Customized Cloning
+            </label>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                    <div class="has-warning">
-                            <input type="text" class="form-control" placeholder="Search by Name, Email address or ADID">        
-                    </div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-warning m-t col-md-offset-2">
-            Start Cloning
-        </button>
+    </div>
+    <div class="row text-center m-b-lg">
+        <button class="btn btn-warning" ng-disabled="true">Start Cloning</button>
     </div>
 </div>

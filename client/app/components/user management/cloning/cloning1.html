@@ -1,0 +1,51 @@
+<div class="row white-bg dashboard-header">
+    <h2>Cloning User's server roles and privileges</h2>
+    <div class="row">
+        <div class="m-t-lg col-md-3 col-md-offset-4">
+            <div class="input-group has-warning col-md-offset-3">
+                <input type="text" class="form-control" placeholder="ADID to clone">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-warning">
+                        <i class="fa fa-search fa-lg"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="col-md-offset-4">
+                <div class="radio i-checks">
+                    <label>
+                        <input type="radio" value="fullCloning" name="cloningOption" checked>
+                        Full Cloning
+                        <sup><i class="fa fa-question-circle"></i></sup>
+                    </label>
+                </div>
+                <div class="radio i-checks">
+                    <label>
+                        <input type="radio" value="customizedCloning" name="cloningOption">
+                        Customized Cloning
+                        <sup><i class="fa fa-question-circle"></i></sup>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-4">
+        <div class="row m-t">
+            <div class="col-md-4">
+                <h3>Mirror User(s):</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <h4 class="btn btn-link">ADD <i class="fa fa-plus-square-o fa-lg"></i></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="has-warning">
+                            <input type="text" class="form-control" placeholder="Search by Name, Email address or ADID">        
+                    </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-warning m-t col-md-offset-2">
+            Start Cloning
+        </button>
+    </div>
+</div>
