@@ -1,32 +1,34 @@
-<div class="modal inmodal" id="serverConnectModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <button type="button" class="btn-link m-xs pull-right" data-dismiss="modal">
-                <i class="fa fa-times"></i>
-            </button>
-            <div class="modal-header">
-                <h3>Server Connection</h3>
-                <h6>Status: {{ serverProperties.status }} 
-                    <span class="fa {{ serverProperties.status === 'Connected' ? 'fa-link' : 'fa-unlink' }}"></span>
-                </h6>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="control-label">Server</label>
-                    <input type="text" class="form-control" placeholder="ex. DVMXC117.dev.sprint.com">
+<div ng-controller="ModalCtrl">
+    <div class="modal inmodal" id="serverConnectModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <button type="button" class="btn-link m-xs pull-right" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                </button>
+                <div class="modal-header">
+                    <h3>Server Connection</h3>
+                    <h6>Status: {{ serverProperties.status }} 
+                        <span class="fa {{ serverProperties.status === 'Connected' ? 'fa-link' : 'fa-unlink' }}"></span>
+                    </h6>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Instances</label>
-                    <select class="form-control" name="instances">
-        
-                    </select>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label">Server</label>
+                        <input type="text" class="form-control" placeholder="ex. DVMXC117.dev.sprint.com" ng-blur="getInstances()" ng-model="serverNameFromUser">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Instances</label>
+                        <select class="form-control" name="instances">
+            
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-xs pull-right">Test Connection</button>
+                    
                 </div>
-                <button type="button" class="btn btn-primary btn-xs pull-right">Test Connection</button>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
-                <button type="button" class="btn btn-warning">Connect</button>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
+                    <button type="button" class="btn btn-warning">Connect</button>
+                </div>
             </div>
         </div>
     </div>

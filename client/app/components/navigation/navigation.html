@@ -13,8 +13,7 @@
                         <span>
                         <a href="../modals/modals.html/#serverConnectModal" data-toggle="modal" data-backdrop="static">
                             <span class="text-warning">
-                                {{ serverProperties.name }} 
-                                <!-- Disconnected to Server -->
+                                {{ serverProperties.name ?  serverProperties.name : 'Disconnected to Server' }} 
                                 <i class="m-l-xs fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
                             </span>
                         </a></span>

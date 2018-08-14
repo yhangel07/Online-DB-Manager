@@ -7,11 +7,7 @@ angular.module("main")
                     if(obj.data.code === '1001'){
                         toastr.warning( obj.data.message, 'Server Warning:');
                     }else if(obj.data.code === '1717'){
-                        // $scope.serverProperties = {
-                        //     name: obj.data.data[0].server_name,
-                        //     status: 'Connected'
-                        // };
-                        $scope.serverProperties.name = obj.data.data[0].server_name,
+                        $scope.serverProperties.name = obj.data.data.recordsets[0].server_name,
                         $scope.serverProperties.status = "Connected";
                         toastr.success($scope.serverProperties.name, 'Connected to Server:');
                     }else{
