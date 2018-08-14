@@ -2,7 +2,8 @@ angular.module("main")
     .controller("MainCtrl", function($scope){
         
         $scope.serverProperties = {
-            name: ''
+            name: '',
+            status: 'Disconnected'
         };
 
 
