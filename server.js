@@ -37,10 +37,9 @@ var executeQuery = function(res, query){
                 }else{
                     sql.close();
 
-                    //return  res.send(data.recordset);
-                    //return  res.status(200).json({code: '1717', message: 'Query Completed', data: data.recordsets[0]});
+                    return  res.status(200).json({code: '1717', message: 'Query Completed', data: data.recordsets[0]});
                     //return  res.status(200).json({code: '1717', message: 'Query Completed', data: data});
-                    console.log("Instances: " + JSON.stringify(data));
+                    console.log("Response: " + JSON.stringify(data));
 
                 }
             });
@@ -57,8 +56,7 @@ app.get('/api/server', function(req,res){
 });
 
 app.get('/api/getInstances', function(req,res){
-    var query = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceNames nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceNames from @GetInstances;"
-    //var query ="EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances';"
+    var query = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceName nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceName from @GetInstances;"
     executeQuery (res, query);
 });
 

@@ -2,6 +2,15 @@
     <div class="modal inmodal" id="serverConnectModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
+                <div class="overlay v-align" ng-show="modalLoader">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                </div>
                 <button type="button" class="btn-link m-xs pull-right" data-dismiss="modal">
                     <i class="fa fa-times"></i>
                 </button>
@@ -16,10 +25,10 @@
                         <label class="control-label">Server</label>
                         <input type="text" class="form-control" placeholder="ex. DVMXC117.dev.sprint.com" ng-blur="getInstances()" ng-model="serverNameFromUser">
                     </div>
+                    
                     <div class="form-group">
                         <label class="control-label">Instances</label>
-                        <select class="form-control" name="instances">
-            
+                        <select class="form-control" ng-model="instanceName" ng-options="instance as instance.InstanceName for instance in instances">
                         </select>
                     </div>
                     <button type="button" class="btn btn-primary btn-xs pull-right">Test Connection</button>
