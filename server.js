@@ -16,7 +16,15 @@ app.use(function (req, res, next){
     next();
 })
 
-var config = {}
+var config = {
+    user: 'dbaph_dev',
+    password: 'projectROS2018',
+    //server: 'DVMXC021.dev.sprint.com',
+    port: 2787,
+    options: {
+        encrypt: false
+    }
+}
 
 var executeQuery = function(res, query){
     sql.connect(config, function(err){
@@ -38,7 +46,6 @@ var executeQuery = function(res, query){
                     sql.close();
 
                     return  res.status(200).json({code: '1717', message: 'Query Completed', data: data.recordsets[0]});
-                    //return  res.status(200).json({code: '1717', message: 'Query Completed', data: data});
                     console.log("Response: " + JSON.stringify(data));
 
                 }
@@ -55,20 +62,11 @@ app.get('/api/server', function(req,res){
     executeQuery (res, query);
 });
 
-app.get('/api/getInstances', function(req,res){
+app.post('/api/getInstances', function(req,res){
+    config.server = req.body.serverName;
     var query = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceName nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceName from @GetInstances;"
     executeQuery (res, query);
 });
-
-var config = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    server: 'DVMXC021.dev.sprint.com',
-    port: 2787,
-    options: {
-        encrypt: false
-    }
-}
 
 app.use(express.static(__dirname + '/client/'));
 

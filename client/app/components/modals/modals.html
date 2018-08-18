@@ -21,22 +21,27 @@
                     </h6>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label">Server</label>
-                        <input type="text" class="form-control" placeholder="ex. DVMXC117.dev.sprint.com" ng-blur="getInstances()" ng-model="serverNameFromUser">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="control-label">Instances</label>
-                        <select class="form-control" ng-model="instanceName" ng-options="instance as instance.InstanceName for instance in instances">
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-primary btn-xs pull-right">Test Connection</button>
-                    
+                    <form name="serverConnectionForm" novalidate>
+                        <div class="form-group" ng-class="errorMessage == '' ? '' : 'has-error'">
+                            <label class="control-label">Server</label>
+                            <input type="text" id="serverNameFromUser" ng-model="serverNameFromUser" name="serverNameFromUser" 
+                                ng-blur="getInstances()" ng-change="errorMessage = ''"
+                                class="form-control" placeholder="ex. DVMXC117.dev.sprint.com" value="" required>
+                            <span class="help-block" ng-bind="errorMessage"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Instances</label>
+                            <select class="form-control" ng-model="instanceName" ng-options="instance as instance.InstanceName for instance in instances">
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-xs pull-right">Test Connection</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
-                    <button type="button" class="btn btn-warning">Connect</button>
+                    <button type="button" class="btn btn-warning" 
+                        ng-disabled="notReadyToConnect">Connect</button>
+                    
                 </div>
             </div>
         </div>
