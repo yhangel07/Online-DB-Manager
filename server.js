@@ -20,6 +20,7 @@ var config = {
     user: 'dbaph_dev',
     password: 'projectROS2018',
     //server: 'DVMXC021.dev.sprint.com',
+    //server: 'DREWC049.dev.sprint.com',
     port: 2787,
     options: {
         encrypt: false

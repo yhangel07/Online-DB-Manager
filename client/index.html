@@ -23,15 +23,7 @@
     <body ng-controller="MainCtrl">
             
         <div id="wrapper">
-            <div ng-include="'/app/components/navigation/navigation.html'"></div>
-            <div ng-include="'/app/components/modals/modals.html'"></div>
-            <div id="page-wrapper" class="gray-bg dashbard-1">    
-                <div ng-include="'/app/components/header and footer/header.html'"></div>
-                <div ng-include="'/app/components/user management/cloning/cloning.html'"></div>
-                <!-- <div ng-include="'/app/components/dashboard/dashboard.html'"></div> -->
-                <div ng-include="'/app/components/header and footer/footer.html'"></div>
-            </div>      
-
+            <div ui-view></div>
         </div>
     </body>
 
@@ -39,6 +31,7 @@
 
     <script type="text/javascript" src="./assets/node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="./assets/node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="./assets/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="./assets/js/inspinia.js"></script>
 
     <script type="text/javascript" src="./assets/node_modules/bootstrap/dist/js/bootstrap.js"></script>

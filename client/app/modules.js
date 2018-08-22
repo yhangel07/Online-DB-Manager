@@ -1,3 +1,3 @@
 angular.module("modules",["main"]);
 
-angular.module("main",[]);
+angular.module("main", []);
