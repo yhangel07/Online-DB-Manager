@@ -6,6 +6,7 @@ var port = process.env.PORT || 8080;
 
 const sql = require('mssql/msnodesqlv8');
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(function (req, res, next){
@@ -14,59 +15,6 @@ app.use(function (req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType, Content-Type, Accept, Authorization");
 
     next();
-})
-
-var config = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    //server: 'DVMXC021.dev.sprint.com',
-    //server: 'DREWC049.dev.sprint.com',
-    port: 2787,
-    options: {
-        encrypt: false
-    }
-}
-
-var executeQuery = function(res, query){
-    sql.connect(config, function(err){
-        if(err){
-            console.log("Error Connecting database: " + err);
-            sql.close();
-
-            return res.status(200).json({code: '1001', message: 'Server details not yet configured'});
-        }else{
-            var request = new sql.Request();
-
-            request.query( query, function (err, data){
-                if(err){
-                    console.log("Error in query return: " + err);
-                    sql.close();
-
-                    return  res.status(200).json({code: '1002', message: 'ERROR: ' + err});
-                }else{
-                    sql.close();
-
-                    return  res.status(200).json({code: '1717', message: 'Query Completed', data: data.recordsets[0]});
-                    console.log("Response: " + JSON.stringify(data));
-
-                }
-            });
-        }
-
-
-    });
-}
-
-
-app.get('/api/server', function(req,res){
-    var query = "SELECT @@SERVERNAME as 'server_name'";
-    executeQuery (res, query);
-});
-
-app.post('/api/getInstances', function(req,res){
-    config.server = req.body.serverName;
-    var query = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceName nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceName from @GetInstances;"
-    executeQuery (res, query);
 });
 
 app.use(express.static(__dirname + '/client/'));
@@ -75,17 +23,124 @@ app.get('/', function(req,res){
     console.log('Server is running ..');
 });
 
-
-// app.get('/api/server', function(req,res){
-//     queryToServer( "SELECT @@SERVERNAME as 'server_name'", function(ret){
-//         console.log("this:" + ret);
-//     });
-
-// });
-
-// app.get('*', function(req,res){
-//    // res.sendFile('/client/index.html');
-// });
-
 app.listen(port);
 console.log("App Listening on port 8080");
+
+var mainConfig = {
+    user: 'dbaph_dev',
+    password: 'projectROS2018',
+    port: 2784,
+    server: 'DREWC049.dev.sprint.com',
+    options: {
+        encrypt: false
+    }
+}
+
+const mainPool = new sql.ConnectionPool(mainConfig, err => {
+    if(err){
+        console.log(err);
+    }else{
+        console.log('Server Listening at port ' + mainConfig.port);
+    }
+});
+
+app.post('/api/login', function(req, res){
+    var sqlQuery = "Use dba_ph_testDB; Select * from dbo.UserLogin where LoginName ='" + req.body.username + "' and PassWord = HASHBYTES('SHA1', '" + req.body.password + "');"
+
+    mainPool.request().query(sqlQuery, (err, result) => {
+        if(err){
+            console.log('Query Error: ' + err);
+            return  res.status(200).json({code: '1002', message: 'ERROR: ' + err});
+        }
+
+        console.dir('RES.1: ' + result.recordset);
+        return  res.status(200).json({code: '1717', message: 'Query Completed', data: result.recordset});
+    });
+});
+
+/**
+var config1 = {
+    user: 'dbaph_dev',
+    password: 'projectROS2018',
+    server: 'DVMXC021.dev.sprint.com',
+    //server: 'DREWC049.dev.sprint.com',
+    port: 2787,
+    //port: 2784,
+    //database: 'NRD',
+    //database: 'dba_ph_testDB',
+    options: {
+        encrypt: false
+    }
+}
+
+const pool1 = new sql.ConnectionPool(config1, err => {
+    if(err){
+        console.log(err);
+    }else{
+        console.log('Server Listening at port ' + config1.port);
+    }
+});
+**/
+
+//var sqlQuery1 = "Select * From EmailData;";
+//var sqlQuery1 = "SELECT * FROM  lkStatus;";
+//var sqlQuery1 = "Select * from UserLogin;";
+
+/**
+const pool1 = new sql.ConnectionPool(config1, err => {
+    if(!err){
+        pool1.request().query(sqlQuery1, (err, result) => {
+            if(err){
+                console.log('Query 1 Error: ' + err);
+            }
+    
+            console.log('RES.1: ' + result.recordsets[0].length);
+        });
+    }else{
+        console.log("Connection Error.1: " + err.state + ' ' + err);
+    }
+
+  
+});
+
+pool1.on('error', err =>{
+    console.log('Connection 1 Error: ' + err);
+});
+**/
+/**
+var config2 = {
+    user: 'dbaph_dev',
+    password: 'projectROS2018',
+    //server: 'DVMXC021.dev.sprint.com',
+    server: 'DREWC049.dev.sprint.com',
+    //port: 2787,
+    port: 2784,
+    database: 'dba_ph_testDB',
+    options: {
+        encrypt: false
+    }
+}
+
+//var sqlQuery2 = "Select * From EmailData;";
+//var sqlQuery2 = "SELECT * FROM  lkStatus;";
+var sqlQuery2 = "Select * from UserLogin;";
+
+const pool2 = new sql.ConnectionPool(config2, err => {
+    if(!err){
+        pool2.request().query(sqlQuery2, (err, result) => {
+            if(err){
+                console.log('Query 2 Error: ' + err);
+            }
+    
+            console.log('RES.2: ' + result.recordsets[0].length);
+        });
+    }else{
+        console.log("Connection Error.2: " +  err);
+    }
+    
+});
+
+pool2.on('error', err =>{
+    console.log('Connection 2 Error: ' + err);
+});
+**/
