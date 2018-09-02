@@ -58,6 +58,10 @@ app.post('/api/login', function(req, res){
     });
 });
 
+// app.get('/api/server', function(req,res){
+    
+// });
+
 /**
 var config1 = {
     user: 'dbaph_dev',

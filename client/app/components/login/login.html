@@ -1,20 +1,20 @@
-<div class="middle-box text-center loginscreen animated fadeInDown" ng-controller="LoginCtrl" ng-init="onLoad()">
+<div class="middle-box text-center loginscreen animated fadeInDown" ng-controller="LoginCtrl">
     <img class="card-img-top w-100" src="../../../assets/img/sprint_logo_yellow_white.png" alt="Sprint Logo">
     <p class="text-muted">Welcome to Sprint Online Database Manager</p>
     <form role="form" name="loginForm" ng-submit="loginFormSubmit()">
         <div class="form-group">
             <input type="text" class="form-control" id="loginUsername" name="loginUsername" 
-                ng-model="login.username" placeholder="Username (ADID) Ex. ab54321" 
+                ng-model="credentials.username" placeholder="Username (ADID) Ex. ab54321" 
                 ng-change="loginCredentials.message = ''" required />
         </div>
         <div class="form-group">
             <input type="password" class="form-control" id="loginPassword" name="loginPassword"
-                ng-model="login.password" placeholder="ODM Password" 
+                ng-model="credentials.password" placeholder="ODM Password" 
                 ng-change="loginCredentials.message = ''" required />
         </div>
         <p class="text-danger">{{ loginCredentials.message }}</p>
         <button type="submit" class="btn btn-warning block full-width m-b"
-            ng-disabled="loginForm.$invalid" ui-sref="dashboard">
+            ng-disabled="loginForm.$invalid">
             Login
             <span class="loading dots" ng-if="loading"></span>
         </button>
