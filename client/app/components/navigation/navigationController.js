@@ -3,6 +3,7 @@ angular.module("main")
         $scope.serverProperties = {};
 
         $scope.onload = function (){
+            /**
             $http.get("/api/server")
                 .then(function(obj){
                     console.log(obj);
@@ -19,5 +20,6 @@ angular.module("main")
                 .catch(function(err){
                     console.log('ERROR: ' + JSON.stringify(err));
                 });
+                */
         }
     });

@@ -1,4 +1,6 @@
 angular.module("main")
-    .controller("DashboardCtrl", function($scope, $http, $state, ParseService, CurrentUser){
-
+    .controller("DashboardCtrl", function($scope){
+        $scope.onload = function(){
+            
+        }
     });

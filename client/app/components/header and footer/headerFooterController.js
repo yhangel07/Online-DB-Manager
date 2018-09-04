@@ -1,6 +1,8 @@
 angular.module("main")
-    .controller("HeaderFooterCtrl", function($scope){
-        $scope.onload = function (){
+    .controller("HeaderFooterCtrl", function($scope, auth){
+
+        $scope.logOutApp = function(){
+
         }
 
     });

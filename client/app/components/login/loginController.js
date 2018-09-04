@@ -1,5 +1,5 @@
 angular.module("main")
-    .controller("LoginCtrl", function($scope, $http, $state, ParseService, $timeout){
+    .controller("LoginCtrl", function($scope, auth, $timeout, $state, session){
         $scope.loginCredentials = [];
         $scope.loading = false;
         $scope.credentials = {};
@@ -7,7 +7,8 @@ angular.module("main")
         $scope.loginFormSubmit = function(){
             $scope.loading = true;
 
-            ParseService.login($scope.credentials)
+            
+            auth.logIn($scope.credentials)
                 .then(function(_user){
                     $scope.loading = false;
                     if(_user != 0){
@@ -15,6 +16,7 @@ angular.module("main")
                             console.log(response);
                             if(response.IsActive){
                                 $timeout(function(){
+                                    session.setUser(response.LoginName);
                                     $state.go('app.dashboard');
                                 }, 2);
                             }else{
@@ -27,6 +29,7 @@ angular.module("main")
                 }).catch(function(err){
                     $scope.loginCredentials.message = err;
                 });   
+            
         }
 
     });

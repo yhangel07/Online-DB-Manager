@@ -16,9 +16,6 @@ app.config(function($stateProvider, $urlRouterProvider){
             url: '/app',
             template: '<ui-view/>',
             abstract: true,
-            resolve: {
-                resolvedUser: CheckForAuthenticatedUser
-            }
         })
         .state('app.dashboard', {
             url: '/dashboard',
@@ -47,27 +44,22 @@ app.config(function($stateProvider, $urlRouterProvider){
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
                 }
-            }
-            ,
+            },
             resolve: {
-                CurrentUser: function(resolvedUser){
-                    return resolvedUser;
+                checkStatus: function ($state, $q, $rootScope){
+                    var deffered = $q.defer();
+                    if($rootScope.auth.isLoggedIn()){
+                        deffered.resolve();
+                    }else{
+                        deffered.reject();
+                    }
+                    return deffered.promise.catch(function(){
+                        $state.go('login');
+                    });
                 }
             }
         });
-
-        function CheckForAuthenticatedUser(ParseService, $state) {
-            return ParseService.getCurrentUser().then(function (_user) {
-                // if resolved successfully return a user object that will set
-                // the variable `resolvedUser`
-                return _user;
-            }, function (_error) {
-                $state.go('login');
-            })
-        }
-
-
-
+    
 }).run(function($rootScope, $state, $stateParams){
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
