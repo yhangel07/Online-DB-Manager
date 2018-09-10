@@ -20,8 +20,8 @@
             return $http.post('/api/login', credentials)
                 .then(function(res){
                     var data = res.data.data;
-                    return data;
                     console.log(data);
+                    return data;
                     //session.setAccessToken(data.accessToken);
                 });
         };

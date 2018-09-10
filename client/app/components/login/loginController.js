@@ -17,6 +17,7 @@ angular.module("main")
                             if(response.IsActive){
                                 $timeout(function(){
                                     session.setUser(response.LoginName);
+                                    session.setPw($scope.credentials.password);
                                     $state.go('app.dashboard');
                                 }, 2);
                             }else{

@@ -58,6 +58,17 @@ app.post('/api/login', function(req, res){
     });
 });
 
+app.get('/api/logout', function(err,res){
+    if(err){
+        return res.status(500);
+    }
+    
+    //TODO create some logs
+    
+    return res.status(200);
+    //return mainPool.close();
+});
+
 // app.get('/api/server', function(req,res){
     
 // });
@@ -148,3 +159,6 @@ pool2.on('error', err =>{
     console.log('Connection 2 Error: ' + err);
 });
 **/
+
+//query for get users
+//select * from master.sys.server_principals
