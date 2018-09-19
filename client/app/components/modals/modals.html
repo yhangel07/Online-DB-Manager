@@ -34,9 +34,11 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <label class="control-label">Instances</label>
-                                    <select class="form-control" 
+                                    <select class="form-control"
+                                        id="ins" 
                                         ng-model="ins" 
                                         ng-options="ins as ins.name for ins in serverDetails.instances">
+                                        <option value='' ng-hide="serverDetails.instances">--Select Instance--</option>
                                     </select>
                                 </div>
                             </div>

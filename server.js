@@ -68,6 +68,12 @@ app.get('/api/logout', function(err,res){
 });
 
 app.post('/api/getInstances', function(req,res){
+        if(typeof (req.body.server) == "undefined"){
+            return res.status(500).json({
+                msg : 'Failed to retrieve Instance and Port',
+                err : err
+            });
+        }
         var queryInstanceAndPort = "select instc_name, port_number from dbo.instances where srvr_name = '" + req.body.server + "';";
 
         mainPool.request().query(queryInstanceAndPort, (err, data) => {
