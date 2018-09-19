@@ -19,10 +19,11 @@
         this.logIn = function(credentials){
             return $http.post('/api/login', credentials)
                 .then(function(res){
-                    var data = res.data.data;
-                    console.log(data);
+                    var data = res.data;
                     return data;
                     //session.setAccessToken(data.accessToken);
+                }).catch(function(err){
+                    console.log(err);
                 });
         };
 
@@ -33,8 +34,9 @@
         this.logOut = function(){
             return $http.get('/api/logout')
                 .then(function(res){
+                    console.log(res);
                     session.destroy();
-                })
+                });
         };
     }
 

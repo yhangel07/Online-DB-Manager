@@ -13,7 +13,6 @@ angular.module("main")
                     $scope.loading = false;
                     if(_user != 0){
                         angular.forEach(_user, function(response){
-                            console.log(response);
                             if(response.IsActive){
                                 $timeout(function(){
                                     session.setUser(response.LoginName);

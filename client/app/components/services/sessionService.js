@@ -2,6 +2,7 @@
     
     function sessionService($log, sessionStorage){
         this._user = sessionStorage.getItem('session.user');
+        //this._pw = sessionStorage.getItem('session.pw');
 
         this.getUser = function(){
             return this._user;
@@ -24,6 +25,7 @@
 
         this.setPw = function(pw){
             this._pw = pw;
+            //sessionStorage.setItem('session.pw', pw);
             return this;
         };
 

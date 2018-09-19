@@ -27,10 +27,11 @@ app.listen(port);
 console.log("App Listening on port 8080");
 
 var mainConfig = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    port: 2784,
-    server: 'DREWC049.dev.sprint.com',
+    user: 'odbm_user',
+    password: 'pass1234$$',
+    port: 2767,
+    server: 'DVMXC021.dev.sprint.com',
+    database: 'SQLMonitor',
     options: {
         encrypt: false
     }
@@ -38,36 +39,89 @@ var mainConfig = {
 
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
-        console.log(err);
+        console.dir(err);
     }else{
         console.log('Server Listening at port ' + mainConfig.port);
     }
 });
 
 app.post('/api/login', function(req, res){
-    var sqlQuery = "Use dba_ph_testDB; Select * from dbo.UserLogin where LoginName ='" + req.body.username + "' and PassWord = HASHBYTES('SHA1', '" + req.body.password + "');"
+    var sqlQuery = "Select * from odbm.UserLogin where LoginName ='" + req.body.username + "' and PassWord = HASHBYTES('SHA1', '" + req.body.password + "');"
 
-    mainPool.request().query(sqlQuery, (err, result) => {
-        if(err){
-            console.log('Query Error: ' + err);
-            return  res.status(200).json({code: '1002', message: 'ERROR: ' + err});
+    mainPool.request().query(sqlQuery, (err, data) => {
+        if(!err){
+            console.dir(data);
+            return res.status(200).json( data.recordset );
+        }else{
+          return res.status(500).json({
+                  msg : 'Failed to retrieve User',
+                  err : err
+               });
         }
-
-        console.dir('RES.1: ' + result.recordset);
-        return  res.status(200).json({code: '1717', message: 'Query Completed', data: result.recordset});
     });
 });
 
 app.get('/api/logout', function(err,res){
-    if(err){
-        return res.status(500);
-    }
-    
-    //TODO create some logs
-    
+    mainPool.end();
     return res.status(200);
-    //return mainPool.close();
+    //TODO create some logs
 });
+
+app.post('/api/getInstances', function(req,res){
+        var queryInstanceAndPort = "select instc_name, port_number from dbo.instances where srvr_name = '" + req.body.server + "';";
+
+        mainPool.request().query(queryInstanceAndPort, (err, data) => {
+            if(!err){
+                return res.status(200).json(data.recordset);
+            }else{
+                return res.status(500).json({
+                        msg : 'Failed to retrieve Instance and Port',
+                        err : err
+                    });
+            }
+        });
+});
+
+/**
+app.get('/api/user', function(err,res){
+    var getUserQuery ="select * from master.sys.server_principals where name like '" + D +"%'";
+
+   mainPool.request().query(getUserQuery, (err, result) => {
+        if(!err){
+            return res.status(200).json( data );
+        }else{
+            return res.status(500).json({
+                msg : 'Failed to retrieve User',
+                err : err
+            });
+        }
+   });
+});
+
+
+function createConnectionPool(config){
+   
+    const pool = new sql.ConnectionPool(config, err => {
+        if(err){
+            console.log(err);
+        }else{
+            console.log('Server Listening at port ' + config.port);
+        }
+    });
+
+    return pool;
+   
+
+   const pool = new sql.ConnectionPool(config)
+        .connect()
+        .then(pool => {
+            console.log('Connected to MSSQL')
+            return pool
+        })
+        .catch(err => console.log('Database Connection Failed! Bad Config: ', err))
+        
+}
+ */
 
 // app.get('/api/server', function(req,res){
     
@@ -88,6 +142,65 @@ var config1 = {
     }
 }
 
+if(!err){
+        return res.status(200).json( data );
+    }else{
+      return res.status(500).json({
+              msg : 'Failed to retrieve Incident',
+              err : err
+           });
+    }
+*/
+
+
+
+
+
+
+/** Pending TODO 
+var config1 = {
+    user: 'dbaph_dev',
+    password: 'projectROS2018',
+    port: 2767,
+    options: {
+        encrypt: false
+    }
+};
+
+app.post('/api/getInstances', function(req,res){
+    config1.server = req.body.server;
+    //config1.user = req.body.user;
+    //config1.password = req.body.password;
+    //config1.port = req.body.port;
+    //console.dir(config1);
+
+    var queryInstance = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceName nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceName from @GetInstances;"
+    var queryInstanceAndPort = "DECLARE @portNumber NVARCHAR(10), @regPath NVARCHAR(40), @path NVARCHAR(max), @count binary(10); SET @count = 1; DECLARE @GetInstances TABLE ( Id int IDENTITY(1,1), InstanceName NVARCHAR(100), RegPath NVARCHAR(100), port_number NVARCHAR(10)); INSERT INTO @GetInstances(InstanceName, RegPath) EXEC master..xp_instance_regenumvalues @rootkey = N'HKEY_LOCAL_MACHINE', @key = N'SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL' WHILE @count <= (SELECT count(*) FROM @GetInstances) BEGIN SET @regPath = (SELECT RegPath from @GetInstances where Id = @count); SET @path = 'Software\Microsoft\Microsoft SQL Server\'; SET @path += @regPath; SET @path += '\MSSQLServer\SuperSocketNetLib\Tcp\IpAll'; EXEC xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key= @path, @value_name = 'TcpPort', @value = @portNumber OUTPUT IF @portNumber IS NULL EXEC xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key=@path,@value_name = 'TcpDynamicPorts',@value = @portNumber OUTPUT Update @GetInstances SET port_number = @portNumber where Id = @count; SET @count += 1; END Select * from @GetInstances Go;";
+
+    
+    //var poolToUse = createConnectionPool(config1);
+
+    const chosenServerPool = new sql.ConnectionPool(config1, err => {
+        if(err){
+            return  res.status(400).json({code: err.originalError.code, message: 'ERROR: ' + err.originalError.Error});
+        }else{
+            console.log('Server Listening at port ' + config1.port);
+            chosenServerPool.request().query(queryInstance, (err, result) => {
+                if(err){
+                    console.log('Query Error: ' + err);
+                    return  res.status(200).json({ message: 'ERROR: ' + err});
+                }
+        
+                console.dir('RES.1: ' + result.recordset);
+                return  res.status(200).json({message: 'Query Completed', data: result.recordset});
+            });
+        }
+    });
+});
+**/
+
+
+/**
 const pool1 = new sql.ConnectionPool(config1, err => {
     if(err){
         console.log(err);
