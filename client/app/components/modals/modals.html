@@ -17,7 +17,7 @@
                 </button>
                 <div class="modal-header">
                     <h3>Server Connection</h3>
-                    <h6>Status: {{ serverProperties.status }} 
+                    <h6>Status: {{ $root.session.getServerStatus() }} 
                         <span class="fa {{ serverProperties.status === 'Connected' ? 'fa-link' : 'fa-unlink' }}"></span>
                     </h6>
                 </div>
@@ -38,7 +38,7 @@
                                         id="ins" 
                                         ng-model="ins" 
                                         ng-options="ins as ins.name for ins in serverDetails.instances">
-                                        <option value='' ng-hide="serverDetails.instances">--Select Instance--</option>
+                                        <option value=''>--Select Instance--</option>
                                     </select>
                                 </div>
                             </div>
@@ -56,8 +56,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
-                    <button type="button" class="btn btn-warning" 
-                        ng-disabled="notReadyToConnect">Connect</button>
+                    <button type="button" class="btn btn-warning" id="serverConnectBtn"
+                        ng-disabled="!ins || ins.name.length === 0">
+                        Connect</button>
                     
                 </div>
             </div>

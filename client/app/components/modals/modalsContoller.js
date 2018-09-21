@@ -3,14 +3,15 @@ angular.module("main")
         $scope.onLoad = function(){
             //$scope.instanceName = '';
             $scope.modalLoader = false;
-            $scope.notReadyToConnect = true;
             $scope.errorMessage ='';
         }
 
+        $scope.serverDetails = {};
+        $scope.serverDetails.instances = [];
 
         $scope.getInstances = function(){
-            $scope.serverDetails = {};
-            $scope.serverDetails.instances = [];
+            $scope.serverDetails.length = 0;
+            $scope.serverDetails.instances.length = 0;
 
             if(typeof($scope.serverNameFromUser) == "undefined" || $scope.serverNameFromUser === null){
                 errorServerName();
@@ -32,9 +33,9 @@ angular.module("main")
                             });
                         });
                         console.log($scope.serverDetails);
-                        $scope.instanceName = $scope.serverDetails.instances[0].name;
+                        $scope.ins = $scope.serverDetails.instances[0].name;
                         $scope.modalLoader = !$scope.modalLoader;
-                        // $scope.notReadyToConnect = false;
+                        //$scope.notReadyToConnect = false;
                     }else{
                         errorServerName();
                     }
@@ -50,7 +51,6 @@ angular.module("main")
 
         var errorServerName = function(){
             $scope.modalLoader = false;
-            $scope.notReadyToConnect = true;
             $scope.errorMessage = "Enter a Valid Server";
             $('#serverNameFromUser').focus();
 
@@ -75,13 +75,12 @@ angular.module("main")
 
         }
 
-        $('#serverConnectModal').on('hidden.bs.modal', function() { 
-            $(this).find('form').trigger('reset');
-            $('#ins').find('option').remove().end()
-            .append("<option value='' ng-hide='serverDetails.instances'>--Select Instance--</option>").val('');
-;
-
-
+        $('#serverConnectModal').on('hidden.bs.modal', function() {
+            if(session.getServerStatus() == "Disconnected"){
+                $(this).find('form').trigger('reset');
+                $('#serverConnectBtn').attr("disabled", true);
+                $('#ins').empty().append("<option value=''>--Select Instance--</option>");
+            }
         });
 
 

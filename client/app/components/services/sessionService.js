@@ -3,6 +3,7 @@
     function sessionService($log, sessionStorage){
         this._user = sessionStorage.getItem('session.user');
         //this._pw = sessionStorage.getItem('session.pw');
+        this._serverStatus = sessionStorage.getItem('session.serverStatus');
 
         this.getUser = function(){
             return this._user;
@@ -14,11 +15,6 @@
             return this;
         };
 
-        this.destroy = function destroy(){
-            this.setUser(null);
-            this.setPw(null);
-        };
-
         this.getPw = function(){
             return this._pw;
         };
@@ -28,6 +24,22 @@
             //sessionStorage.setItem('session.pw', pw);
             return this;
         };
+
+        this.destroy = function destroy(){
+            this.setUser(null);
+            this.setPw(null);
+            this.setServerStatus(null);
+        };
+
+        this.getServerStatus = function(){
+            return this._serverStatus;
+        }
+
+        this.setServerStatus = function(serverStatus){
+            this._serverStatus = serverStatus;
+            sessionStorage.setItem('session.serverStatus', serverStatus);
+        };
+
 
     }
 
