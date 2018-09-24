@@ -4,6 +4,7 @@
         this._user = sessionStorage.getItem('session.user');
         //this._pw = sessionStorage.getItem('session.pw');
         this._serverStatus = sessionStorage.getItem('session.serverStatus');
+        this._serverDetails = sessionStorage.getItem('session.serverDetails');
 
         this.getUser = function(){
             return this._user;
@@ -40,7 +41,14 @@
             sessionStorage.setItem('session.serverStatus', serverStatus);
         };
 
+        this.getServerDetails = function(){
+            return this._serverDetails;
+        };
 
+        this.setServerDetails = function(serverDetails){
+            this._serverDetails = serverDetails;
+            sessionStorage.setItem('session.serverDetails', serverDetails);
+        };
     }
 
     sessionService.$inject = ['$log', 'sessionStorage'];

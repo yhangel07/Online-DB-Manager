@@ -1,8 +1,9 @@
 angular.module("main")
-    .controller("NavCtrl", function($scope, $http){
-        $scope.serverProperties = {};
+    .controller("NavCtrl", function($scope, session, $http){
+       // $scope.serverProperties = {};
 
         $scope.onload = function (){
+            //$scope.serverProperties.name = session.getServerDetails();
             /**
             $http.get("/api/server")
                 .then(function(obj){

@@ -18,7 +18,7 @@
                 <div class="modal-header">
                     <h3>Server Connection</h3>
                     <h6>Status: {{ $root.session.getServerStatus() }} 
-                        <span class="fa {{ serverProperties.status === 'Connected' ? 'fa-link' : 'fa-unlink' }}"></span>
+                        <span class="fa {{ $root.session.getServerStatus() === 'Connected' ? 'fa-link' : 'fa-unlink' }}"></span>
                     </h6>
                 </div>
                 <div class="modal-body">
@@ -57,9 +57,11 @@
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
                     <button type="button" class="btn btn-warning" id="serverConnectBtn"
-                        ng-disabled="!ins || ins.name.length === 0">
-                        Connect</button>
-                    
+                        ng-disabled="ins.port == null"
+                        ng-click = "connectToServer(serverNameFromUser, ins)">
+                        {{ $root.session.getServerStatus() === 'Connected' ? 'Disconnect' : 'Connect' }}
+                        <span class="loading dots" ng-if="connectingToServer"></span>
+                    </button>
                 </div>
             </div>
         </div>

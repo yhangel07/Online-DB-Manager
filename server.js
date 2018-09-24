@@ -88,6 +88,46 @@ app.post('/api/getInstances', function(req,res){
         });
 });
 
+app.post('/api/server', function(req,res){
+    var secondaryConfig = {
+        user: req.body.user,
+        password: req.body.pw,
+        //password: 'projectROS2018',
+        port: req.body.portNumber,
+        server: req.body.server,
+        options: {
+            encrypt: false
+            //instanceName: req.body.instance
+        }
+    }
+    console.dir(secondaryConfig);
+
+    const secondaryPool = new sql.ConnectionPool(secondaryConfig, err => {
+        if(err){
+            console.log("Connection Error at Secondary pool: " + err.state + ' ' + err);
+            return res.status(500).json({
+                msg: 'Failed to Connect to Secondary Server',
+                err: err
+            });
+        }else{
+            console.log('Server connected at Secondary Pool at port ' + secondaryConfig.port);
+            secondaryPool.request().query("SELECT CONVERT(sysname, SERVERPROPERTY('servername'));", (err, data) => {
+                if(err){
+                    console.log('Query Error: ' + err);
+                }
+        
+                return res.status(200).json(data.recordset[0]);
+            });
+            
+        }
+    });
+    
+    secondaryPool.on('error', err =>{
+        console.log('Secondary Connection Error: ' + err);
+    });
+
+});
+
 /**
 app.get('/api/user', function(err,res){
     var getUserQuery ="select * from master.sys.server_principals where name like '" + D +"%'";
@@ -129,9 +169,7 @@ function createConnectionPool(config){
 }
  */
 
-// app.get('/api/server', function(req,res){
-    
-// });
+
 
 /**
 var config1 = {

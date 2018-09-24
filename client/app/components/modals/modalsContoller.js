@@ -4,6 +4,7 @@ angular.module("main")
             //$scope.instanceName = '';
             $scope.modalLoader = false;
             $scope.errorMessage ='';
+            $scope.serverProperties.status = session.getServerStatus();
         }
 
         $scope.serverDetails = {};
@@ -18,10 +19,6 @@ angular.module("main")
             }else{
                 $scope.serverDetails.server = serverNameCheck($scope.serverNameFromUser);
                 $scope.modalLoader = !$scope.modalLoader;  
-
-            // if(!session.getPw()){
-            //     $("#getPasswordFromModal").modal({ backdrop : 'static' },"show");
-            // }else{
 
             $http.post('/api/getInstances', $scope.serverDetails)
                 .then(function(obj){
@@ -68,12 +65,52 @@ angular.module("main")
         $scope.setPasswordFromModal = function(newPw){
             session.setPw(newPw);
             $("#getPasswordFromModal").modal("hide");
-            $scope.getInstances();
-        }
+            //$scope.getInstances();
+        };
 
-        $scope.connectToServer = function(){
+        $scope.connectToServer = function(serverName, serverInstance){
+            if(!session.getPw()){
+                $("#getPasswordFromModal").modal({ backdrop : 'static' },"show");
+            }else{
+                $scope.connectingToServer = true;
 
-        }
+                var secondaryServerDetails = {
+                    server: serverName,
+                    instance: serverInstance.name,
+                    portNumber: serverInstance.port,
+                    user: session.getUser(),
+                    pw: session.getPw()
+                };
+                
+                $http.post('/api/server', secondaryServerDetails)
+                    .then(function(res){
+                        $scope.connectingToServer = false;
+
+                        if(res.status == "200"){
+                            angular.forEach(res.data, function(response){
+                                console.log(response);
+                                toastr.success(response, 'Connected to Server');
+                                session.setServerStatus('Connected');
+                                session.setServerDetails(response);
+                                $("#serverConnectModal").modal("hide");
+
+                            });
+
+
+                        //     //TODO
+                        //     //save serverdetails in session
+                        //     //close modal
+                        //     //change server status
+                        //     //change button text
+                        //     //remove loading icon
+                        //     //place serverName\instance\port in navigation
+                        }
+                    }).catch(function(err){
+                        $scope.connectingToServer = false;
+                        console.log(err);
+                    });
+            }
+        };
 
         $('#serverConnectModal').on('hidden.bs.modal', function() {
             if(session.getServerStatus() == "Disconnected"){
@@ -83,5 +120,11 @@ angular.module("main")
             }
         });
 
+        $('#getPasswordFromModal').on('shown.bs.modal', function(){
+            $('#serverConnectBtn').attr("disabled", true);
+        });
 
+        $('#getPasswordFromModal').on('hide.bs.modal', function(){
+            $('#serverConnectBtn').attr("disabled", false);
+        });
     });
