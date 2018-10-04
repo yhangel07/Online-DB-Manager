@@ -1,10 +1,16 @@
 angular.module("main")
     .controller("ModalCtrl", function($scope, $http, session){
         $scope.onLoad = function(){
-            //$scope.instanceName = '';
             $scope.modalLoader = false;
             $scope.errorMessage ='';
             $scope.serverProperties.status = session.getServerStatus();
+
+            if($scope.serverProperties.status == "Connected"){
+                $scope.serverNameFromUser = session.getServerName();
+                $scope.serverDetails.instances.length = 0;
+                $scope.serverDetails.instances = JSON.parse(session.getServerInstance());
+                $scope.ins = JSON.parse(session.getSelectedInstance());
+            }
         }
 
         $scope.serverDetails = {};
@@ -29,10 +35,8 @@ angular.module("main")
                                 port: response.port_number
                             });
                         });
-                        console.log($scope.serverDetails);
                         $scope.ins = $scope.serverDetails.instances[0].name;
                         $scope.modalLoader = !$scope.modalLoader;
-                        //$scope.notReadyToConnect = false;
                     }else{
                         errorServerName();
                     }
@@ -40,10 +44,8 @@ angular.module("main")
                 }).catch(function(err){
                     console.log('ERROR: ' + err);
                     errorServerName();
-
                 });
             }
-            // }
         };
 
         var errorServerName = function(){
@@ -65,7 +67,6 @@ angular.module("main")
         $scope.setPasswordFromModal = function(newPw){
             session.setPw(newPw);
             $("#getPasswordFromModal").modal("hide");
-            //$scope.getInstances();
         };
 
         $scope.connectToServer = function(serverName, serverInstance){
@@ -92,21 +93,16 @@ angular.module("main")
                                 toastr.success(response, 'Connected to Server');
                                 session.setServerStatus('Connected');
                                 session.setServerDetails(response);
+                                session.setServerName($scope.serverNameFromUser);
+                                session.setServerInstance($scope.serverDetails.instances, $scope.ins);
+
                                 $("#serverConnectModal").modal("hide");
 
                             });
-
-
-                        //     //TODO
-                        //     //save serverdetails in session
-                        //     //close modal
-                        //     //change server status
-                        //     //change button text
-                        //     //remove loading icon
-                        //     //place serverName\instance\port in navigation
                         }
                     }).catch(function(err){
                         $scope.connectingToServer = false;
+                        errorServerName();
                         console.log(err);
                     });
             }

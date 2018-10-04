@@ -4,7 +4,10 @@
         this._user = sessionStorage.getItem('session.user');
         //this._pw = sessionStorage.getItem('session.pw');
         this._serverStatus = sessionStorage.getItem('session.serverStatus');
+        this._serverInstance = sessionStorage.getItem('session.serverInstance');
+        this._serverName = sessionStorage.getItem('session.serverName');
         this._serverDetails = sessionStorage.getItem('session.serverDetails');
+        this._serverSelectedInstance = sessionStorage.getItem('session.selectedInstance');
 
         this.getUser = function(){
             return this._user;
@@ -39,6 +42,30 @@
         this.setServerStatus = function(serverStatus){
             this._serverStatus = serverStatus;
             sessionStorage.setItem('session.serverStatus', serverStatus);
+        };
+
+        this.getServerInstance = function(){
+            return this._serverInstance;
+        };
+
+        this.getSelectedInstance = function(){
+            return this._serverSelectedInstance;
+        };
+
+        this.setServerInstance = function(serverInstance, selectedInstance){
+            this._serverInstance = serverInstance;
+            this._serverSelectedInstance = selectedInstance;
+            sessionStorage.setItem('session.serverInstance', JSON.stringify(serverInstance));
+            sessionStorage.setItem('session.selectedInstance', JSON.stringify(selectedInstance));
+        };
+
+        this.getServerName = function(){
+            return this._serverName;
+        };
+
+        this.setServerName = function(serverName){
+            this._serverName = serverName;
+            sessionStorage.setItem('session.serverName', serverName);
         };
 
         this.getServerDetails = function(){

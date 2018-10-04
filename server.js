@@ -6,6 +6,8 @@ var port = process.env.PORT || 8080;
 
 const sql = require('mssql/msnodesqlv8');
 
+var secondaryPool = '';
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -102,7 +104,7 @@ app.post('/api/server', function(req,res){
     }
     console.dir(secondaryConfig);
 
-    const secondaryPool = new sql.ConnectionPool(secondaryConfig, err => {
+    secondaryPool = new sql.ConnectionPool(secondaryConfig, err => {
         if(err){
             console.log("Connection Error at Secondary pool: " + err.state + ' ' + err);
             return res.status(500).json({
@@ -121,6 +123,31 @@ app.post('/api/server', function(req,res){
             
         }
     });
+    
+    secondaryPool.on('error', err =>{
+        console.log('Secondary Connection Error: ' + err);
+    });
+
+});
+
+app.get('/api/checkServer', function(req, res){
+    if(secondaryPool === null || typeof secondaryPool === "undefined" || secondaryPool.length === 0){
+        return res.status(500).json({
+            msg: 'Connection to server not yet established',
+        });
+    }else{
+        secondaryPool.request().query("SELECT @@SERVERNAME", (err, data) => {
+                if(err){
+                    return res.status(500).json({
+                        msg: 'Failed to Connect to Secondary Server',
+                        err: err
+                    });
+                    console.log('Error: ' + err);
+                }
+                console.dir(data);
+                return res.status(200).json(data);
+        });
+    }
     
     secondaryPool.on('error', err =>{
         console.log('Secondary Connection Error: ' + err);
