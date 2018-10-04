@@ -35,6 +35,13 @@
             this.setServerStatus(null);
         };
 
+        this.destroyServerSession = function destroyServerSession(){
+            this.setServerStatus('Disconnected');
+            this.setServerDetails(null);
+            this.setServerName(null);
+            this.setServerInstance(null, null);
+        };
+
         this.getServerStatus = function(){
             return this._serverStatus;
         }

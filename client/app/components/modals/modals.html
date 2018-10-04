@@ -61,7 +61,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-white">Cancel</button>
                     <button type="button" class="btn btn-warning" id="serverConnectBtn"
                         ng-disabled="ins.port == null"
-                        ng-click = "connectToServer(serverNameFromUser, ins)">
+                        ng-click = "modalSubmit()">
                         {{ $root.session.getServerStatus() === 'Connected' ? 'Disconnect' : 'Connect' }}
                         <span class="loading dots" ng-if="connectingToServer"></span>
                     </button>

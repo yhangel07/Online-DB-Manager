@@ -144,7 +144,6 @@ app.get('/api/checkServer', function(req, res){
                     });
                     console.log('Error: ' + err);
                 }
-                console.dir(data);
                 return res.status(200).json(data);
         });
     }
@@ -153,6 +152,13 @@ app.get('/api/checkServer', function(req, res){
         console.log('Secondary Connection Error: ' + err);
     });
 
+});
+
+app.get('/api/serverDisconnect', function(req,res){
+    secondaryPool.close();
+    res.status(200).json({
+        msg: 'Server Disconnected'
+    });
 });
 
 /**

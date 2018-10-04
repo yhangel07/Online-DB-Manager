@@ -69,7 +69,32 @@ angular.module("main")
             $("#getPasswordFromModal").modal("hide");
         };
 
-        $scope.connectToServer = function(serverName, serverInstance){
+        $scope.modalSubmit = function(){
+            if(session.getServerStatus() === 'Connected'){
+                disconnectToServer();
+            }else{
+                connectToServer($scope.serverNameFromUser, $scope.ins);
+            }
+        };
+
+        var disconnectToServer = function(){
+            $scope.connectingToServer = true;
+
+            $http.get('/api/serverDisconnect')
+                .then(function(res){
+                    $scope.connectingToServer = false;
+                    console.log(res);
+                    session.destroyServerSession();
+                    $("#serverConnectModal").modal("hide");
+                    clearForm();
+                    toastr.warning(res.data.msg, "Server status");
+                }).catch(function(err){
+                    $scope.connectingToServer = false;
+                    console.log(err);
+                });
+        };
+
+        var connectToServer = function(serverName, serverInstance){
             if(!session.getPw()){
                 $("#getPasswordFromModal").modal({ backdrop : 'static' },"show");
             }else{
@@ -108,11 +133,15 @@ angular.module("main")
             }
         };
 
+        var clearForm = function(){
+            $('#serverConnectModal').find('form').trigger('reset');
+            $('#serverConnectBtn').attr("disabled", true);
+            $('#ins').empty().append("<option value=''>--Select Instance--</option>");
+        };
+
         $('#serverConnectModal').on('hidden.bs.modal', function() {
             if(session.getServerStatus() == "Disconnected"){
-                $(this).find('form').trigger('reset');
-                $('#serverConnectBtn').attr("disabled", true);
-                $('#ins').empty().append("<option value=''>--Select Instance--</option>");
+                clearForm();
             }
         });
 

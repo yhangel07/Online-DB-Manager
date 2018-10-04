@@ -7,6 +7,7 @@ angular.module("main")
                 }).catch(function(err){
                     console.log(err);
                     toastr.warning(err.data.msg, "Server status");
+                    session.destroyServerSession();
                 });
         }
     });
