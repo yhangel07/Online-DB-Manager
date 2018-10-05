@@ -161,13 +161,16 @@ app.get('/api/serverDisconnect', function(req,res){
     });
 });
 
-/**
-app.get('/api/user', function(err,res){
-    var getUserQuery ="select * from master.sys.server_principals where name like '" + D +"%'";
 
-   mainPool.request().query(getUserQuery, (err, result) => {
+app.get('/api/user', function(req,res){
+    console.log(req.query);
+
+    var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
+
+   mainPool.request().query(getUserQuery, (err, data) => {
         if(!err){
-            return res.status(200).json( data );
+            console.dir(data);
+            return res.status(200).json( data.recordset );
         }else{
             return res.status(500).json({
                 msg : 'Failed to retrieve User',
@@ -177,7 +180,7 @@ app.get('/api/user', function(err,res){
    });
 });
 
-
+/**
 function createConnectionPool(config){
    
     const pool = new sql.ConnectionPool(config, err => {

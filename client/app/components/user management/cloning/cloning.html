@@ -10,13 +10,19 @@
                     </div>
                 </div>
                 <div class="input-group has-warning widget-text-box m-sm">
-                    <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
+                    <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
+                        ng-model="copyFromUser" ng-keyup="searchUserByLetter(copyFromUser)">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-warning">
                             <i class="fa fa-search fa-lg"></i>
                         </button>
                     </span>
+                    
                 </div>
+                <ul class="typeahead" ng-show="suggestions.length > 0">
+                        <li ng-repeat="suggestion in suggestions track by $index">
+                            <a class="dropdown-item" href="#">{{suggestion.name}}</a></li>
+                </ul>
             </div>
         </div>
         <div class="col-md-1 text-center v-align">
