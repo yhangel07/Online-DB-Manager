@@ -38,7 +38,7 @@ var mainConfig = {
         encrypt: false
     }
 }
-
+ 
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
         console.dir(err);

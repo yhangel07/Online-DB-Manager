@@ -1,0 +1,25 @@
+{
+  "name": "ODM",
+  "description": "online database manager",
+  "main": "app.js",
+  "authors": [
+    "arianne coyco"
+  ],
+  "license": "ISC",
+  "homepage": "index.html",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-auto-complete": "^1.7.4",
+    "angular": "1.6.7",
+    "angular-sanitize": "1.6.9",
+    "angular-ui-router": "^1.0.20",
+    "lodash": "4.17.5"
+  }
+}

@@ -16,6 +16,7 @@
   "author": "coycoAD",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.6.7",
     "express": "^4.16.3",
     "msnodesqlv8": "^0.4.14",
     "mssql": "^4.1.0"

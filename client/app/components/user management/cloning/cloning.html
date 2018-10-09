@@ -1,4 +1,4 @@
-<div class="row white-bg p-lg" ng-controller="CloningCtrl">
+<div class="row white-bg p-lg" ng-controller="CloningCtrl as ctrl">
     <h2>Cloning User's server roles and privileges</h2>
 
     <div class="row row-eq-height m">
@@ -11,18 +11,17 @@
                 </div>
                 <div class="input-group has-warning widget-text-box m-sm">
                     <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
-                        ng-model="copyFromUser" ng-keyup="searchUserByLetter(copyFromUser)">
+                        ng-model="ctrl.copyFromUser"
+                        auto-complete="ctrl.autoCompleteOptions" />
+                        <!-- <span class="loading" ng-show="ctrl.loading"></span> -->
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-warning">
                             <i class="fa fa-search fa-lg"></i>
                         </button>
                     </span>
                     
+
                 </div>
-                <ul class="typeahead" ng-show="suggestions.length > 0">
-                        <li ng-repeat="suggestion in suggestions track by $index">
-                            <a class="dropdown-item" href="#">{{suggestion.name}}</a></li>
-                </ul>
             </div>
         </div>
         <div class="col-md-1 text-center v-align">

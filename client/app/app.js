@@ -1,4 +1,5 @@
-var app = angular.module("App",['modules', 'ui.router']);
+
+var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'autoCompleteModule']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     var dirPath = "../app/components/";
