@@ -1,28 +1,8 @@
-if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function (searchString, position) {
-        position = position || 0;
-        return this.substr(position, searchString.length) === searchString;
-    };
-}
-
-if (!String.prototype.includes) {
-    String.prototype.includes = function (search, start) {
-        'use strict';
-        if (typeof start !== 'number') {
-            start = 0;
-        }
-
-        if (start + search.length > this.length) {
-            return false;
-        } else {
-            return this.indexOf(search, start) !== -1;
-        }
-    };
-}
-
 angular.module("main")
     .controller("CloningCtrl", function($scope, $http){
         var rowCount = 1;
+        $scope.originalUser = null;
+        $scope.mirrorUser = null;
 
         $scope.inputsInMirror = [
             {
@@ -39,32 +19,68 @@ angular.module("main")
 
         var that = this;
         that.copyFromUser = null;
-        that.loading = false;
+        that.copyToUser = null;
+        that.loadingFrom = false;
+        that.loadingTo = false;
 
-        that.autoCompleteOptions = {
+        that.autoCompleteOptionsFromUser = {
             minimumChars: 1,
+            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a href=''>here</a> to create one.</span>",
             data: function (searchText) {
+                that.loadingFrom = true;
                 return $http.get('/api/user?searchString=' + searchText )
                 .then(function(res){
-                    that.loading = true;
 
                     var filteredUsers = _.filter(res.data, function(user){
                         return user.name;
                     });
-                    that.loading = false;
+                    that.loadingFrom = false;
 
                     return _.map(filteredUsers, 'name');
 
                 }).catch(function(err){
                     console.log(err);
                 });
+            },
+            itemSelected: function(selectedUser){
+                $scope.originalUser = selectedUser.item;
             }
         };
 
-        //TODO
-        //change search button to loading when loading
-        //do the same in the other half
-        //make button search unclickable
-        //customize 'No result found' Make it a link
-  
+        that.autoCompleteOptionsToUser = {
+            minimumChars: 1,
+            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a href=''>here</a> to create one.</span>",
+            data: function (searchText) {
+                that.loadingTo = true;
+                return $http.get('/api/user?searchString=' + searchText )
+                .then(function(res){
+
+                    var filteredUsers = _.filter(res.data, function(user){
+                        return user.name != $scope.originalUser;
+                    });
+                    that.loadingTo = false;
+
+                    return _.map(filteredUsers, 'name');
+
+                }).catch(function(err){
+                    console.log(err);
+                });
+            },
+            itemSelected: function(selectedUser){
+                $scope.mirrorUser = selectedUser.item;
+            }
+        };
+
+        $scope.resetSelectionOrg = function(){
+            $scope.originalUser = null;
+        };
+
+        $scope.resetSelectionMirror = function(){
+            $scope.mirrorUser = null;
+        };
+
+        $scope.fullClone = function(){
+            console.log($scope.originalUser);
+            console.log($scope.mirrorUser);
+        };
     });

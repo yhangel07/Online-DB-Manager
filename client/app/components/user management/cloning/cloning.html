@@ -6,18 +6,21 @@
             <div class="widget yellow-bg" id="userOrigin">
                 <div class="row">
                     <div class="col-md-9">
-                        <h3>User to clone</h3>
+                        <h3>User to clone:</h3>
                     </div>
                 </div>
                 <div class="input-group has-warning widget-text-box m-sm">
                     <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
                         ng-model="ctrl.copyFromUser"
-                        auto-complete="ctrl.autoCompleteOptions" />
-                        <!-- <span class="loading" ng-show="ctrl.loading"></span> -->
+                        auto-complete="ctrl.autoCompleteOptionsFromUser" 
+                        ng-keydown="resetSelectionOrg()"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-warning">
-                            <i class="fa fa-search fa-lg"></i>
+                            <i class="fa fa-search fa-lg" ng-hide="ctrl.loadingFrom"></i>
+                            <span class="loading dots" ng-if="ctrl.loadingFrom"></span>
+
                         </button>
+
                     </span>
                     
 
@@ -39,11 +42,18 @@
                 </div>
                 <div class="widget-text-box">
                     <div class="input-group has-success m-xs" ng-repeat="inputInMirror in inputsInMirror">
-                            <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or john.doe@sprint.com">
+                            <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
+                                ng-model="ctrl.copyToUser"
+                                auto-complete="ctrl.autoCompleteOptionsToUser" 
+                                ng-disabled="originalUser == null"
+                                ng-keydown="resetSelectionMirror()"/>
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-primary">
-                                    <i class="fa fa-search fa-lg"></i>
+                                    <i class="fa fa-search fa-lg" ng-hide="ctrl.loadingTo"></i>
+                                    <span class="loading dots" ng-if="ctrl.loadingTo"></span>
+
                                 </button>
+
                             </span>
                     </div>
                 </div>
@@ -58,6 +68,10 @@
         </div>
     </div>
     <div class="row text-center m-b-lg">
-        <button class="btn btn-warning" ng-disabled="true">Start Cloning</button>
+        <button type="button" class="btn btn-warning" id="btnCloning" 
+            ng-disabled="mirrorUser == null || originalUser == null"
+            ng-click="fullClone()">
+                Start Cloning
+        </button>
     </div>
 </div>

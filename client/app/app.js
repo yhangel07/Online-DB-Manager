@@ -44,6 +44,9 @@ app.config(function($stateProvider, $urlRouterProvider){
                 'modal@app.dashboard':{
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
+                },
+                'disconnected@app.dashboard':{
+                    templateUrl: dirPath + 'pages/disconnected.html'
                 }
             },
             resolve: {
