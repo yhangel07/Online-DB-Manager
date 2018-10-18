@@ -31,20 +31,44 @@ console.log("App Listening on port 8080");
 var mainConfig = {
     user: 'odbm_user',
     password: 'pass1234$$',
-    port: 2767,
-    server: 'DVMXC021.dev.sprint.com',
+    //port: 2767,
+    //server: 'DVMXC021.dev.sprint.com',
+    server: 'ISD-PF0ZH0N5',
     database: 'SQLMonitor',
     options: {
-        encrypt: false
+        encrypt: false,
+        instanceName: 'MS_TEST'
     }
 }
- 
+/**
+const mainPool = '';
+
+function connectToServer(){
+    mainPool = new sql.ConnectionPool(mainConfig, err => {
+        if(err){
+            connectToServer();
+            console.dir(err);
+        }else{
+            console.log('Server Listening at port ' + mainConfig.port);
+        }
+    });
+}
+
+mainPool.on('error', err =>{
+    console.log("Can\'t connect to server: " + err);
+});
+*/
+
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
         console.dir(err);
     }else{
         console.log('Server Listening at port ' + mainConfig.port);
     }
+});
+
+mainPool.on('error', err =>{
+    console.log("Can\'t connect to server: " + err);
 });
 
 app.post('/api/login', function(req, res){

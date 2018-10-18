@@ -6,16 +6,14 @@
  */
 
 $(document).ready(function () {
+
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
         $('body').addClass('body-small')
     } else {
         $('body').removeClass('body-small')
     }
-
-    // MetsiMenu
-    $('#side-menu').metisMenu();
-
+    
     // Collapse ibox function
     $('.collapse-link').click( function() {
         var ibox = $(this).closest('div.ibox');
@@ -82,17 +80,18 @@ $(document).ready(function () {
     //        $('body').append(data);
     //});
 
-    // Minimalize menu
-    $('.navbar-minimalize').click(function () {
-        $("body").toggleClass("mini-navbar");
-        SmoothlyMenu();
-
-    });
-    // $('body').on('click', '.navbar-minimalize', function() {
+    //Minimalize menu
+    // $('.navbar-minimalize').click(function () {
     //     $("body").toggleClass("mini-navbar");
     //     SmoothlyMenu();
-        
+
     // });
+
+    $('body').on('click', '.navbar-minimalize', function(event) {
+        event.preventDefault();
+        $("body").toggleClass("mini-navbar");
+        SmoothlyMenu();
+    });
 
     // Tooltips demo
     $('.tooltip-demo').tooltip({

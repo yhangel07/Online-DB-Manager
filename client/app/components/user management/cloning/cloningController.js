@@ -49,7 +49,7 @@ angular.module("main")
 
         that.autoCompleteOptionsToUser = {
             minimumChars: 1,
-            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a href=''>here</a> to create one.</span>",
+            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a ui-sref='.newUser'>here</a> to create one.</span>",
             data: function (searchText) {
                 that.loadingTo = true;
                 return $http.get('/api/user?searchString=' + searchText )

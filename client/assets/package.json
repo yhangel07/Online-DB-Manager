@@ -18,6 +18,7 @@
     "jquery-ui-dist": "^1.12.1",
     "live-server": "^1.2.0",
     "lodash": "^4.17.5",
+    "metismenu": "^3.0.3",
     "normalize.css": "^7.0.0",
     "pace": "0.0.4",
     "text-spinners": "^1.0.5"

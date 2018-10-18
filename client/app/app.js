@@ -37,17 +37,18 @@ app.config(function($stateProvider, $urlRouterProvider){
                     templateUrl: dirPath + 'header and footer/footer.html',
                     controller: 'HeaderFooterCtrl'
                 },
-                'cloning@app.dashboard':{
-                    templateUrl: dirPath + 'user management/cloning/cloning.html',
-                    controller: 'CloningCtrl'
-                },
                 'modal@app.dashboard':{
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
-                },
-                'disconnected@app.dashboard':{
-                    templateUrl: dirPath + 'pages/disconnected.html'
                 }
+                // },
+                // 'cloning@app.dashboard':{
+                //     templateUrl: dirPath + 'user management/cloning/cloning.html',
+                //     controller: 'CloningCtrl'
+                // },
+                // 'disconnected@app.dashboard':{
+                //     templateUrl: dirPath + 'pages/disconnected.html'
+                // }
             },
             resolve: {
                 checkStatus: function ($state, $q, $rootScope){
@@ -62,6 +63,18 @@ app.config(function($stateProvider, $urlRouterProvider){
                     });
                 }
             }
+        }).state('app.dashboard.mainComponent', {
+            templateUrl: dirPath + 'dashboard/mainComponent.html',
+            controller: ''
+        }).state('app.dashboard.cloning', {
+            templateUrl: dirPath + 'user management/cloning/cloning.html',
+            controller: 'CloningCtrl'
+        }).state('app.dashboard.newUser', {
+            templateUrl: dirPath + 'user management/newUser/newUser.html',
+            controller: ''
+        }).state('app.dashboard.provisioning', {
+                templateUrl: dirPath + 'user management/provisioning/provisioning.html',
+                controller: ''
         });
     
 }).run(function($rootScope, $state, $stateParams){

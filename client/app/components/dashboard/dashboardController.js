@@ -1,6 +1,7 @@
 angular.module("main")
-    .controller("DashboardCtrl", function($scope, $http, session){
+    .controller("DashboardCtrl", function($scope, $http, session, $state){
         $scope.onload = function(){
+            $scope.$state = $state;
             $http.get('/api/checkServer')
                 .then(function(res){
                     console.log(res);
