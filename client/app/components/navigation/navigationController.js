@@ -1,9 +1,29 @@
+function compile(element){
+    var el = angular.element(element);    
+    $scope = el.scope();
+      $injector = el.injector();
+      $injector.invoke(function($compile){
+         $compile(el)($scope)
+      })     
+  }
+  
+  function disabledMenu(status){
+      var el = document.getElementById("userMgmt");
+      el.setAttribute("aria-disabled", status);
+      compile(el);
+  }
+
 angular.module("main")
     .controller("NavCtrl", function($scope, $state, session, $http){
-       // $scope.serverProperties = {};
 
         $scope.onload = function (){
-            $scope.$state = $state;
+            if(session.getServerDetails() == 'null'){
+                disabledMenu(true);
+            }else{
+                disabledMenu(false);
+            }
+
+            $scope.$state = $state; //TODO if need pa
             //$scope.serverProperties.name = session.getServerDetails();
             /**
             $http.get("/api/server")

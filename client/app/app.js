@@ -41,14 +41,6 @@ app.config(function($stateProvider, $urlRouterProvider){
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
                 }
-                // },
-                // 'cloning@app.dashboard':{
-                //     templateUrl: dirPath + 'user management/cloning/cloning.html',
-                //     controller: 'CloningCtrl'
-                // },
-                // 'disconnected@app.dashboard':{
-                //     templateUrl: dirPath + 'pages/disconnected.html'
-                // }
             },
             resolve: {
                 checkStatus: function ($state, $q, $rootScope){

@@ -137,12 +137,14 @@ angular.module("main")
             $('#serverConnectModal').find('form').trigger('reset');
             $('#serverConnectBtn').attr("disabled", true);
             $('#ins').empty().append("<option value=''>--Select Instance--</option>");
+            disabledMenu(true);
         };
 
         $('#serverConnectModal').on('hidden.bs.modal', function() {
             if(session.getServerStatus() == "Disconnected"){
                 clearForm();
             }
+            disabledMenu(false);
         });
 
         $('#getPasswordFromModal').on('shown.bs.modal', function(){
@@ -153,3 +155,19 @@ angular.module("main")
             $('#serverConnectBtn').attr("disabled", false);
         });
     });
+
+    function compile(element){
+        var el = angular.element(element);    
+        $scope = el.scope();
+          $injector = el.injector();
+          $injector.invoke(function($compile){
+             $compile(el)($scope)
+          })     
+      }
+      
+      function disabledMenu(status){
+          alert('modal');
+          var el = document.getElementById("userMgmt");
+          el.setAttribute("aria-disabled", status);
+          compile(el);
+      }
