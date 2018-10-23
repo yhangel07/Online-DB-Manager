@@ -15,11 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
         .state('app',{
             url: '/app',
-            template: '<ui-view/>',
-            abstract: true,
+            template: '<ui-view/>'
         })
         .state('app.dashboard', {
             url: '/dashboard',
+            abstract: true,
             views: {
                 '': { 
                     templateUrl: dirPath + 'dashboard/dashboard.html',
@@ -56,7 +56,9 @@ app.config(function($stateProvider, $urlRouterProvider){
                 }
             }
         }).state('app.dashboard.mainComponent', {
+            url: '',
             templateUrl: dirPath + 'dashboard/mainComponent.html',
+            //abstract: true,
             controller: ''
         }).state('app.dashboard.cloning', {
             templateUrl: dirPath + 'user management/cloning/cloning.html',

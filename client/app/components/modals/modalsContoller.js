@@ -166,7 +166,6 @@ angular.module("main")
       }
       
       function disabledMenu(status){
-          alert('modal');
           var el = document.getElementById("userMgmt");
           el.setAttribute("aria-disabled", status);
           compile(el);
