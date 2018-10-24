@@ -31,13 +31,13 @@ console.log("App Listening on port 8080");
 var mainConfig = {
     user: 'odbm_user',
     password: 'pass1234$$',
-    //port: 2767,
-    //server: 'DVMXC021.dev.sprint.com',
-    server: 'ISD-PF0ZH0N5',
+    port: 2767,
+    server: 'DVMXC021.dev.sprint.com',
+    //server: 'ISD-PF0ZH0N5',
     database: 'SQLMonitor',
     options: {
         encrypt: false,
-        instanceName: 'MS_TEST'
+        //instanceName: 'MS_TEST'
     }
 }
 /**
@@ -88,9 +88,13 @@ app.post('/api/login', function(req, res){
 });
 
 app.get('/api/logout', function(err,res){
-    mainPool.end();
-    return res.status(200);
-    //TODO create some logs
+    //mainPool.close();
+    if(!(secondaryPool === null || typeof secondaryPool === "undefined" || secondaryPool.length === 0)){
+        secondaryPool.close();
+    }
+    res.status(200).json({
+        msg: 'Server Disconnected'
+    });
 });
 
 app.post('/api/getInstances', function(req,res){

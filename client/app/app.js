@@ -15,7 +15,20 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
         .state('app',{
             url: '/app',
-            template: '<ui-view/>'
+            template: '<ui-view/>',
+            resolve: {
+                appState: function ($state, $q, $rootScope){
+                    var deffered = $q.defer();
+                    if($rootScope.auth.isLoggedIn()){
+                        deffered.resolve();
+                    }else{
+                        deffered.reject();
+                    }
+                    return deffered.promise.catch(function(){
+                        $state.go('login');
+                    });
+                }
+            }
         })
         .state('app.dashboard', {
             url: '/dashboard',
@@ -43,7 +56,7 @@ app.config(function($stateProvider, $urlRouterProvider){
                 }
             },
             resolve: {
-                checkStatus: function ($state, $q, $rootScope){
+                parentState: function ($state, $q, $rootScope){
                     var deffered = $q.defer();
                     if($rootScope.auth.isLoggedIn()){
                         deffered.resolve();
@@ -58,8 +71,23 @@ app.config(function($stateProvider, $urlRouterProvider){
         }).state('app.dashboard.mainComponent', {
             url: '',
             templateUrl: dirPath + 'dashboard/mainComponent.html',
+            resolve: {
+                childState: function ($state, $q, $rootScope){
+
+                    var deffered = $q.defer();
+                    if($rootScope.auth.isLoggedIn()){
+                        deffered.resolve();
+                    }else{
+                        deffered.reject();
+                    }
+                    return deffered.promise.catch(function(){
+                        $state.go('login');
+                    });
+                }
+            },
             //abstract: true,
-            controller: ''
+            controller: '',
+            
         }).state('app.dashboard.cloning', {
             templateUrl: dirPath + 'user management/cloning/cloning.html',
             controller: 'CloningCtrl'

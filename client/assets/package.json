@@ -9,7 +9,6 @@
   "author": "arianne coyco",
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.1.0",
     "angular": "1.6.7",
     "angular-auto-complete": "^1.7.0",
     "angular-sanitize": "^1.6.9",
@@ -22,5 +21,8 @@
     "normalize.css": "^7.0.0",
     "pace": "0.0.4",
     "text-spinners": "^1.0.5"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.4.1"
   }
 }

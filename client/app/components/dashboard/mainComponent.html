@@ -9,6 +9,44 @@
         </a>
     </div>
 </div>
+
 <div ng-show="$root.session.getServerDetails()">
-    Show Main component
+    <div class="row m">
+        <a class="col-lg-4" ui-sref=".newUser">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fa fa-user-plus fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">Create User</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-lg-4" ui-sref=".cloning">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fas fa-user-friends fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">Cloning Tool</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-lg-4" ui-sref=".provisioning">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fas fa-user-cog fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">User Provisioning</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>

@@ -18,7 +18,7 @@ angular.module("main")
                                     session.setUser(response.LoginName);
                                     session.setServerStatus('Disconnected');
                                     session.setPw($scope.credentials.password);
-                                    $state.go('app.dashboard');
+                                    $state.go('app.dashboard.mainComponent');
                                 }, 2);
                             }else{
                                 $scope.loginCredentials.message = 'User is inactive. Contact Support.';

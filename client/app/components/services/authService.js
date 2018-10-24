@@ -7,8 +7,8 @@
         *   @returns boolean
         */
         this.isLoggedIn = function isLoggedIn(){
-
-            return session.getUser() !== null
+            //return (session.getUser() !== 'null' || session.getUser() !== null);
+            return session.getUser() !== 'null';
         }
 
         /**
@@ -34,7 +34,6 @@
         this.logOut = function(){
             return $http.get('/api/logout')
                 .then(function(res){
-                    console.log(res);
                     session.destroy();
                 });
         };
