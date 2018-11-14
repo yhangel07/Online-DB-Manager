@@ -40,24 +40,6 @@ var mainConfig = {
         instanceName: 'MS_TEST'
     }
 }
-/**
-const mainPool = '';
-
-function connectToServer(){
-    mainPool = new sql.ConnectionPool(mainConfig, err => {
-        if(err){
-            connectToServer();
-            console.dir(err);
-        }else{
-            console.log('Server Listening at port ' + mainConfig.port);
-        }
-    });
-}
-
-mainPool.on('error', err =>{
-    console.log("Can\'t connect to server: " + err);
-});
-*/
 
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
@@ -123,7 +105,8 @@ app.post('/api/server', function(req,res){
         user: req.body.user,
         password: req.body.pw,
         //password: 'projectROS2018',
-        port: req.body.portNumber,
+        //port: req.body.portNumber,
+        port: 2767,
         server: req.body.server,
         options: {
             encrypt: false
@@ -193,9 +176,11 @@ app.get('/api/serverDisconnect', function(req,res){
 app.get('/api/user', function(req,res){
     console.log(req.query);
 
-    var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
+    // var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
 
-   mainPool.request().query(getUserQuery, (err, data) => {
+    var getUserQuery ="select name from master.sys.server_principals";
+    //TODO change to secondaryPool after development
+    mainPool.request().query(getUserQuery, (err, data) => {
         if(!err){
             console.dir(data);
             return res.status(200).json( data.recordset );
@@ -208,6 +193,25 @@ app.get('/api/user', function(req,res){
    });
 });
 
+app.post('/api/fullCloning', function(req,res){
+    mainPool.request()
+        .input('oldUser', sql.NVarChar(50), req.body.oldUser)
+        .input('newUser', sql.NVarChar(50), req.body.newUser)
+        .input('printOnly', sql.Bit, 0) //TODO change to 0
+        .input('ISnew', sql.Int, 1)
+        .input('ISSqlaunt', sql.Bit, req.body.IsSqlaunt)
+        .execute('[odbm].[sp_ClonePermsRights]', (err, data) =>{
+            if(!err){
+                console.dir(data);
+                return res.status(200).json( data.recordset );
+            }else{
+                return res.status(500).json({
+                    msg : 'Failed to Clone',
+                    err : err
+                });
+            }
+        });
+});
 /**
 function createConnectionPool(config){
    

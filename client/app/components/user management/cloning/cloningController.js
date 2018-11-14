@@ -25,7 +25,7 @@ angular.module("main")
 
         that.autoCompleteOptionsFromUser = {
             minimumChars: 1,
-            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a href=''>here</a> to create one.</span>",
+            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Enter a valid user</span>",
             data: function (searchText) {
                 that.loadingFrom = true;
                 return $http.get('/api/user?searchString=' + searchText )
@@ -49,7 +49,7 @@ angular.module("main")
 
         that.autoCompleteOptionsToUser = {
             minimumChars: 1,
-            noMatchTemplate: "<span>No User found match '{{entry.searchText}}'. Click <a ui-sref='.newUser'>here</a> to create one.</span>",
+            noMatchTemplate: "<span ng-click='userNotFound(entry.searchText)'>'{{entry.searchText}}' is not found. Click here to create user.</span>",
             data: function (searchText) {
                 that.loadingTo = true;
                 return $http.get('/api/user?searchString=' + searchText )
@@ -71,6 +71,10 @@ angular.module("main")
             }
         };
 
+        $scope.userNotFound = function(newUser){
+            console.log(newUser);
+        };
+
         $scope.resetSelectionOrg = function(){
             $scope.originalUser = null;
         };
@@ -82,5 +86,23 @@ angular.module("main")
         $scope.fullClone = function(){
             console.log($scope.originalUser);
             console.log($scope.mirrorUser);
+            var checkTypeAunt = 1;
+
+            if( $scope.mirrorUser.substring(0, 2).toUpperCase() + $scope.mirrorUser.substring(2, 1) === 'AD\\'){
+                checkTypeAunt = 0;
+            }
+
+            var cloningParameters = {
+                orgUser: $scope.originalUser,
+                newUser: $scope.mirrorUser,
+                typeAunt: checkTypeAunt
+            };
+
+            $http.post('/api/fullCloning', cloningParameters)
+                .then(function(res){
+                    console.log(res);
+                }).catch(function(err){
+                    console.log('ERROR: ' + err);
+                })
         };
     });

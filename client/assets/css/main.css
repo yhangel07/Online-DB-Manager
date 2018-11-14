@@ -2,6 +2,14 @@
     background-color: #FEE100;
 }
 
+/* Override Select2 multiple selected */
+.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice{
+    color:#333333;
+}
+
+
 /* Customize Spacing */
 .mt-10p{
     margin-top: 10%;

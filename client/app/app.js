@@ -54,6 +54,10 @@ app.config(function($stateProvider, $urlRouterProvider){
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
                 }
+                ,'cloningTrial@app.dashboard':{
+                    templateUrl: dirPath + 'user management/cloning/cloning1.html',
+                    controller: 'CloningCtrl1'
+                } //TODO remove after dev
             },
             resolve: {
                 parentState: function ($state, $q, $rootScope){
