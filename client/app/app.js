@@ -1,5 +1,5 @@
 
-var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'autoCompleteModule']);
+var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'angular-ladda']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     var dirPath = "../app/components/";
@@ -55,7 +55,7 @@ app.config(function($stateProvider, $urlRouterProvider){
                     controller: 'ModalCtrl'
                 }
                 ,'cloningTrial@app.dashboard':{
-                    templateUrl: dirPath + 'user management/cloning/cloning1.html',
+                    templateUrl: dirPath + 'user management/cloning/cloning.html',
                     controller: 'CloningCtrl1'
                 } //TODO remove after dev
             },
@@ -106,4 +106,7 @@ app.config(function($stateProvider, $urlRouterProvider){
 }).run(function($rootScope, $state, $stateParams){
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-});
+})
+
+      
+.config(function (laddaProvider) { });

@@ -178,7 +178,7 @@ app.get('/api/user', function(req,res){
 
     // var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
 
-    var getUserQuery ="select name from master.sys.server_principals";
+    var getUserQuery ="select * from sys.server_principals where (type='s' or type='u') and is_disabled = 0 and name <> 'sa'";
     //TODO change to secondaryPool after development
     mainPool.request().query(getUserQuery, (err, data) => {
         if(!err){
@@ -198,7 +198,7 @@ app.post('/api/fullCloning', function(req,res){
         .input('oldUser', sql.NVarChar(50), req.body.oldUser)
         .input('newUser', sql.NVarChar(50), req.body.newUser)
         .input('printOnly', sql.Bit, 0) //TODO change to 0
-        .input('ISnew', sql.Int, 1)
+        .input('ISnew', sql.Int, req.body.iSnew)
         .input('ISSqlaunt', sql.Bit, req.body.IsSqlaunt)
         .execute('[odbm].[sp_ClonePermsRights]', (err, data) =>{
             if(!err){

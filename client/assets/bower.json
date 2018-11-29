@@ -16,10 +16,11 @@
     "tests"
   ],
   "dependencies": {
-    "angular-auto-complete": "^1.7.4",
     "angular": "1.6.7",
     "angular-sanitize": "1.6.9",
     "angular-ui-router": "^1.0.20",
-    "lodash": "4.17.5"
+    "lodash": "4.17.5",
+    "ladda": "1.0.6",
+    "angular-ladda": "^0.4.3"
   }
 }

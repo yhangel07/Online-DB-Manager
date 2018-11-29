@@ -1,4 +1,4 @@
-<div class="row white-bg p-lg" ng-controller="CloningCtrl as ctrl">
+<div class="row white-bg p-lg" ng-controller="CloningCtrl1 as ctrl" ng-init="onLoad()">
     <h2>Cloning User's server roles and privileges</h2>
 
     <div class="row row-eq-height m">
@@ -9,17 +9,15 @@
                         <h3>User to clone:</h3>
                     </div>
                 </div>
-                <div class="input-group has-warning widget-text-box m-sm">
-                    <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
+                <div class="has-warning widget-text-box m-sm">
+                    <select id="orgUserSelection"  name="orgUserSelection" style="color: #333333;"
+                        class="js-example-basic-single form-control"
                         ng-model="ctrl.copyFromUser"
-                        auto-complete="ctrl.autoCompleteOptionsFromUser" 
-                        ng-keydown="resetSelectionOrg()"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-warning">
-                            <i class="fa fa-search fa-lg" ng-hide="ctrl.loadingFrom"></i>
-                            <span class="loading dots" ng-if="ctrl.loadingFrom"></span>
-                        </button>
-                    </span>
+                        ng-options="serverUser for serverUser in serverUsers"
+                        ng-disabled="cloningInProgress"
+                        >
+                            <option></option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -27,32 +25,23 @@
             <i class="fa fa-angle-double-right fa-5x"></i>
         </div>
         <div class="col-md-5" id="userMirror">
-            <div class="widget navy-bg">
+            <div class="widget yellow-bg">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-9">
                         <h3>Mirror User(s):</h3>
                     </div>
-                    <div class="col-md-5 text-right" ng-click="addInputInMirror()">
-                        <h4 class="add-input-text">ADD <i class="fa fa-plus-square-o fa-lg"></i></h4>
+                </div>
+                <div class="widget-text-box m-sm">
+                    <div class="has-success m-xs">
+                        <select id="newUsers" style="color: #333333;" name="newUsers[]" multiple="multiple"
+                            class="js-example-basic-multiple form-control" 
+                            ng-model="ctrl.copyToUser" ng-disabled = "ctrl.copyFromUser == null || cloningInProgress" 
+                            ng-options="serverUser for serverUser in serverUsers | excludeFrom: {name: ctrl.copyFromUser} track by serverUser"
+                            >
+                        </select>
                     </div>
                 </div>
-                <div class="widget-text-box">
-                    <div class="input-group has-success m-xs" ng-repeat="inputInMirror in inputsInMirror">
-                            <input type="text" class="form-control" style="color: #333333" placeholder="ex. mc598139 or AD\mc598139"
-                                ng-model="ctrl.copyToUser"
-                                auto-complete="ctrl.autoCompleteOptionsToUser" 
-                                ng-disabled="originalUser == null"
-                                ng-keydown="resetSelectionMirror()"/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary">
-                                    <i class="fa fa-search fa-lg" ng-hide="ctrl.loadingTo"></i>
-                                    <span class="loading dots" ng-if="ctrl.loadingTo"></span>
-
-                                </button>
-
-                            </span>
-                    </div>
-                </div>
+                <p class="m-sm">** May select multiple users. If user is not found, It will be created.</p>
             </div>
         </div>
     </div>
@@ -63,11 +52,62 @@
             </label>
         </div>
     </div>
-    <div class="row text-center m-b-lg">
+    <div class="row text-center m-b-sm">
         <button type="button" class="btn btn-warning" id="btnCloning" 
-            ng-disabled="mirrorUser == null || originalUser == null"
-            ng-click="fullClone()">
-                Start Cloning
+            ng-disabled="ctrl.copyFromUser == null || ctrl.copyToUser == null"
+            ng-click="sureToClone(ctrl.copyFromUser)"
+            ladda="loginLoading" data-spinner-size="30" data-style="expand-right">
+                {{ !cloningInProgress ? 'Start Cloning' : 'Cloning...' }}
         </button>
     </div>
+    <div class="row text-center m-b-lg">
+        <button type="button" class="btn btn-white" id="resetBtn"
+            ng-disabled="ctrl.copyFromUser == null || cloningInProgress"
+            ng-click="resetAll()">
+                Reset Selection
+        </button>
+    </div>
+    <!-- Full Cloning User Modal -->
+    <div class="modal inmodal" id="sureCloneModal" tabindex="-3" role="dialog">
+        <div class="modal-dialog modal-sm w-25">
+            <div class="modal-content mt-30p">
+                <button type="button" class="btn-link m-xs pull-right" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                </button>
+                <div class="modal-header p-15">
+                    <h3>Cloning Alert</h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Are you sure you want to clone</h5>
+                    <span class="text-center text-warning"><h3>{{userToClone}}</h3></span>
+                    <h5>to</h5>
+                    <span class="text-center text-info" ng-repeat="user in usersToCloneTo">
+                    <h3>{{user}}</h3></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" ng-click="fullClone()">Yes</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-white">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<!-- <div class="row white-bg p-lg">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>Cloning Result:</h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        Grant User sampleUser1_forSysAunth db_datareader, db_datawriter to master database
+                        <br>Grant User sampleUser1_forSysAunth db_owner, db_datareader, db_datawriter to SQLMonitor database
+                        <br>Cloning Done!
+                    </p>
+                </div>
+            </div>
+        </div>
+</div> -->
+
