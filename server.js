@@ -31,13 +31,13 @@ console.log("App Listening on port 8080");
 var mainConfig = {
     user: 'odbm_user',
     password: 'pass1234$$',
-    //port: 2767,
-    //server: 'DVMXC021.dev.sprint.com',
-    server: 'ISD-PF0ZH0N5',
+    port: 2767,
+    server: 'DVMXC021.dev.sprint.com',
+    //server: 'ISD-PF0ZH0N5',
     database: 'SQLMonitor',
     options: {
-        encrypt: false,
-        instanceName: 'MS_TEST'
+        encrypt: false
+        //instanceName: 'MS_TEST'
     }
 }
 
@@ -174,7 +174,7 @@ app.get('/api/serverDisconnect', function(req,res){
 
 
 app.get('/api/user', function(req,res){
-    console.log(req.query);
+    //console.log(req.query);
 
     // var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
 
