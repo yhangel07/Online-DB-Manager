@@ -54,10 +54,10 @@ app.config(function($stateProvider, $urlRouterProvider){
                     templateUrl: dirPath + 'modals/modals.html',
                     controller: 'ModalCtrl'
                 }
-                ,'cloningTrial@app.dashboard':{
-                    templateUrl: dirPath + 'user management/cloning/cloning.html',
-                    controller: 'CloningCtrl1'
-                } //TODO remove after dev
+                // ,'cloningTrial@app.dashboard':{
+                //     templateUrl: dirPath + 'user management/cloning/cloning.html',
+                //     controller: 'CloningCtrl1'
+                // } //TODO remove after dev
             },
             resolve: {
                 parentState: function ($state, $q, $rootScope){
@@ -94,7 +94,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             
         }).state('app.dashboard.cloning', {
             templateUrl: dirPath + 'user management/cloning/cloning.html',
-            controller: 'CloningCtrl'
+            controller: 'CloningCtrl1'
         }).state('app.dashboard.newUser', {
             templateUrl: dirPath + 'user management/newUser/newUser.html',
             controller: ''
