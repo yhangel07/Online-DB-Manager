@@ -44,42 +44,42 @@ angular.module("main")
          $scope.fullClone = function(){
             $("#sureCloneModal").modal("hide");
 
-            $scope.loginLoading = true;
-            var increment = 0.1;
-            var count = 0;
-
-            angular.forEach($scope.usersToCloneTo, function(user){
-                $scope.loginLoading = count;
-
-                $scope.cloningInProgress = true;
+            $scope.cloningInProgress = true;
 
 
-                var cloningParameter = {
-                    oldUser: $scope.userToClone,
-                    newUser: user,
-                    iSnew: checkIfIsNew(user),
-                    IsSqlaunt: checkIfSqlAunth(user)
-                }
+            $http.get('api/createSP')
+                .then(function(res){
+                    //console.log('SP response: ' + res.data.msg);
 
-                $http.post('api/fullCloning', cloningParameter)
-                    .then(function(res){
-                        count = count + increment;
-                        toastr.success("Full Cloning Completed for " + user, "Cloning Status", { timeOut: 9500 });
+                    angular.forEach($scope.usersToCloneTo, function(user){
 
-                        $scope.cloningInProgress = false;
-                        $scope.resetAll();
-                        
-                        console.log(res);
+                        var cloningParameter = {
+                            oldUser: $scope.userToClone,
+                            newUser: user,
+                            iSnew: checkIfIsNew(user),
+                            IsSqlaunt: checkIfSqlAunth(user)
+                        }
 
-                    }).catch(function(err){
-                        toastr.danger(err, "Cloning Status");
-                        $scope.cloningInProgress = false;
+                        $http.post('api/fullCloning', cloningParameter)
+                            .then(function(res){
+                                toastr.success("Full Cloning Completed for " + user, "Cloning Status", { timeOut: 9500 });
 
-                        console.log('ERROR: ' + err);
+                                $scope.cloningInProgress = false;
+                                $scope.resetAll();
+                                
+                                console.log(res);
+
+                            }).catch(function(err){
+                                toastr.danger(err, "Cloning Status");
+                                $scope.cloningInProgress = false;
+
+                                console.log('ERROR: ' + err);
+                            });   
                     });
-                
+            }).catch(function(err){
+                $scope.cloningInProgress = false;
+                console.log('ERROR: ' + JSON.stringify(err));
             });
-            $scope.loginLoading = false;
          };
 
          var checkIfSqlAunth = function(user){

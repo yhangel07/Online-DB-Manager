@@ -1,12 +1,12 @@
-USE [SQLMonitor]
+USE [master]
 GO
-/****** Object:  StoredProcedure [odbm].[sp_ClonePermsRights]    Script Date: 11/28/2018 06:48:26 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ClonePermsRights]    Script Date: 01/02/2019 22:12:13 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [odbm].[sp_ClonePermsRights] (
+ALTER PROCEDURE [dbo].[sp_ClonePermsRights] (
     @oldUser sysname, --ADID from which to copy permission right
     @newUser sysname, --ADID to which copy rights
     @printOnly bit = 1, --When 1 then only script is printed on screen, when 0 then also script is executed, when NULL, script is only executed and not printed
@@ -61,7 +61,7 @@ END
 	  END		
 	  SET @sql = ''									
 	  -- CREATE AND CHECK USER LOGIN
-			IF CHARINDEX('AD\',@NewUser)> 0 and @ISSqlaunt = 1
+			IF CHARINDEX('AD',@NewUser)> 0 and @ISSqlaunt = 1
 			BEGIN
 						SET @msg = 'New user ' + QUOTENAME(@NewUser) + ' Invalid name for SQL Authentication '
 
@@ -69,7 +69,7 @@ END
 							RETURN			
 			END
 
-			IF CHARINDEX('AD\',@NewUser)= 0 and @ISSqlaunt = 0
+			IF CHARINDEX('AD',@NewUser)= 0 and @ISSqlaunt = 0
 			BEGIN
 						SET @msg = 'New user ' + QUOTENAME(@NewUser) + ' Invalid name for Windows Authentication '
 
@@ -342,3 +342,4 @@ END
 	 SELECT * FROM #outputResult
 	 
 END
+     

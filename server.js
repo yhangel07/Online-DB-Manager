@@ -58,7 +58,7 @@ app.post('/api/login', function(req, res){
 
     mainPool.request().query(sqlQuery, (err, data) => {
         if(!err){
-            console.dir(data);
+            //console.dir(data);
             return res.status(200).json( data.recordset );
         }else{
           return res.status(500).json({
@@ -185,8 +185,8 @@ app.get('/api/user', function(req,res){
     //TODO change to secondaryPool after development
     secondaryPool.request().query(getUserQuery, (err, data) => {
         if(!err){
-            console.dir('User retrieve: ');
-            console.dir(data);
+            // console.dir('User retrieve: ');
+            // console.dir(data);
             return res.status(200).json( data.recordset );
         }else{
             return res.status(500).json({
@@ -197,9 +197,9 @@ app.get('/api/user', function(req,res){
    });
 });
 
-
 var cloningQuery =`
-CREATE PROCEDURE [dbo].[sp_ClonePermsRights] (
+    
+Create PROCEDURE [dbo].[sp_ClonePermsRights] (
     @oldUser sysname, --ADID from which to copy permission right
     @newUser sysname, --ADID to which copy rights
     @printOnly bit = 1, --When 1 then only script is printed on screen, when 0 then also script is executed, when NULL, script is only executed and not printed
@@ -254,7 +254,7 @@ END
 	  END		
 	  SET @sql = ''									
 	  -- CREATE AND CHECK USER LOGIN
-			IF CHARINDEX('AD\',@NewUser)> 0 and @ISSqlaunt = 1
+			IF CHARINDEX('AD',@NewUser)> 0 and @ISSqlaunt = 1
 			BEGIN
 						SET @msg = 'New user ' + QUOTENAME(@NewUser) + ' Invalid name for SQL Authentication '
 
@@ -262,7 +262,7 @@ END
 							RETURN			
 			END
 
-			IF CHARINDEX('AD\',@NewUser)= 0 and @ISSqlaunt = 0
+			IF CHARINDEX('AD',@NewUser)= 0 and @ISSqlaunt = 0
 			BEGIN
 						SET @msg = 'New user ' + QUOTENAME(@NewUser) + ' Invalid name for Windows Authentication '
 
@@ -535,7 +535,7 @@ END
 	 SELECT * FROM #outputResult
 	 
 END
-     `;
+ `;
     
     var dropSPquery = `
         IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_ClonePermsRights]') AND type in (N'P', N'PC'))
@@ -543,37 +543,23 @@ END
         BEGIN
             DROP PROCEDURE [dbo].[sp_ClonePermsRights]
             SET ANSI_NULLS ON
-        END    
+            SET QUOTED_IDENTIFIER ON
+
+        END
     `;
 
-app.post('/api/fullCloning', function(req,res){
+app.get('/api/createSP', function(req,res){
     secondaryPool.request.multiple = true;
-    secondaryPool.request().query(dropSPquery, (err,data) => {
+    secondaryPool.request().query(dropSPquery, (err, data) => {
         if(!err){
             console.dir('No SP in DB');
     
             secondaryPool.request().batch(cloningQuery, (err,data) => {
                 if(!err){
                     console.dir('Stored Procedure Created');
-                    
-                    secondaryPool.request()
-                    .input('oldUser', sql.NVarChar(50), req.body.oldUser)
-                    .input('newUser', sql.NVarChar(50), req.body.newUser)
-                    .input('printOnly', sql.Bit, 0) //TODO change to 0
-                    .input('ISnew', sql.Int, req.body.iSnew)
-                    .input('ISSqlaunt', sql.Bit, req.body.IsSqlaunt)
-                    .execute('[dbo].[sp_ClonePermsRights]', (err, data) =>{
-                        if(!err){
-                            console.dir(data);
-                            return res.status(200).json( data.recordset );
-                        }else{
-                            return res.status(500).json({
-                                msg : 'Failed to Clone',
-                                err : err
-                            });
-                        }
+                    return res.status(200).json({
+                        msg: 'Stored Procedure Created'
                     });
-                    
                 }else{
                     console.dir('Failed to Create SP');
                     console.dir(err);
@@ -583,9 +569,6 @@ app.post('/api/fullCloning', function(req,res){
                     });
                 }
             });
-            
-           
-
         }else{
             console.dir('Failed to locate SP');
             console.dir(err);
@@ -595,213 +578,24 @@ app.post('/api/fullCloning', function(req,res){
             });
         }
     });
-
-    // secondaryPool.request().query(cloningQuery, (err,data) => {
-    //     if(!err){
-    //         console.dir(data);
-    //         return res.status(200).json( data.recordset );
-    //     }else{
-    //         console.dir('Failed to Create SP');
-    //         console.dir(err);
-    //         return res.status(500).json({
-    //             msg : 'Failed to Clone User',
-    //             err : err
-    //         });
-    //     }
-    // });
 });
 
-// app.post('/api/fullCloning', function(req,res){
-//     mainPool.request()
-//         .input('oldUser', sql.NVarChar(50), req.body.oldUser)
-//         .input('newUser', sql.NVarChar(50), req.body.newUser)
-//         .input('printOnly', sql.Bit, 0) //TODO change to 0
-//         .input('ISnew', sql.Int, req.body.iSnew)
-//         .input('ISSqlaunt', sql.Bit, req.body.IsSqlaunt)
-//         .execute('[odbm].[sp_ClonePermsRights]', (err, data) =>{
-//             if(!err){
-//                 console.dir(data);
-//                 return res.status(200).json( data.recordset );
-//             }else{
-//                 return res.status(500).json({
-//                     msg : 'Failed to Clone',
-//                     err : err
-//                 });
-//             }
-//         });
-// });
-/**
-function createConnectionPool(config){
-   
-    const pool = new sql.ConnectionPool(config, err => {
-        if(err){
-            console.log(err);
-        }else{
-            console.log('Server Listening at port ' + config.port);
-        }
-    });
-
-    return pool;
-   
-
-   const pool = new sql.ConnectionPool(config)
-        .connect()
-        .then(pool => {
-            console.log('Connected to MSSQL')
-            return pool
-        })
-        .catch(err => console.log('Database Connection Failed! Bad Config: ', err))
-        
-}
- */
-
-
-
-/**
-var config1 = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    server: 'DVMXC021.dev.sprint.com',
-    //server: 'DREWC049.dev.sprint.com',
-    port: 2787,
-    //port: 2784,
-    //database: 'NRD',
-    //database: 'dba_ph_testDB',
-    options: {
-        encrypt: false
-    }
-}
-
-if(!err){
-        return res.status(200).json( data );
-    }else{
-      return res.status(500).json({
-              msg : 'Failed to retrieve Incident',
-              err : err
-           });
-    }
-*/
-
-
-
-
-
-
-/** Pending TODO 
-var config1 = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    port: 2767,
-    options: {
-        encrypt: false
-    }
-};
-
-app.post('/api/getInstances', function(req,res){
-    config1.server = req.body.server;
-    //config1.user = req.body.user;
-    //config1.password = req.body.password;
-    //config1.port = req.body.port;
-    //console.dir(config1);
-
-    var queryInstance = "DECLARE @GetInstances TABLE ( Value nvarchar(100), InstanceName nvarchar(100), Data nvarchar(100)); Insert into @GetInstances EXECUTE xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key = 'SOFTWARE\\Microsoft\\Microsoft SQL Server', @value_name = 'InstalledInstances'; Select InstanceName from @GetInstances;"
-    var queryInstanceAndPort = "DECLARE @portNumber NVARCHAR(10), @regPath NVARCHAR(40), @path NVARCHAR(max), @count binary(10); SET @count = 1; DECLARE @GetInstances TABLE ( Id int IDENTITY(1,1), InstanceName NVARCHAR(100), RegPath NVARCHAR(100), port_number NVARCHAR(10)); INSERT INTO @GetInstances(InstanceName, RegPath) EXEC master..xp_instance_regenumvalues @rootkey = N'HKEY_LOCAL_MACHINE', @key = N'SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL' WHILE @count <= (SELECT count(*) FROM @GetInstances) BEGIN SET @regPath = (SELECT RegPath from @GetInstances where Id = @count); SET @path = 'Software\Microsoft\Microsoft SQL Server\'; SET @path += @regPath; SET @path += '\MSSQLServer\SuperSocketNetLib\Tcp\IpAll'; EXEC xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key= @path, @value_name = 'TcpPort', @value = @portNumber OUTPUT IF @portNumber IS NULL EXEC xp_regread @rootkey = 'HKEY_LOCAL_MACHINE', @key=@path,@value_name = 'TcpDynamicPorts',@value = @portNumber OUTPUT Update @GetInstances SET port_number = @portNumber where Id = @count; SET @count += 1; END Select * from @GetInstances Go;";
-
-    
-    //var poolToUse = createConnectionPool(config1);
-
-    const chosenServerPool = new sql.ConnectionPool(config1, err => {
-        if(err){
-            return  res.status(400).json({code: err.originalError.code, message: 'ERROR: ' + err.originalError.Error});
-        }else{
-            console.log('Server Listening at port ' + config1.port);
-            chosenServerPool.request().query(queryInstance, (err, result) => {
-                if(err){
-                    console.log('Query Error: ' + err);
-                    return  res.status(200).json({ message: 'ERROR: ' + err});
-                }
-        
-                console.dir('RES.1: ' + result.recordset);
-                return  res.status(200).json({message: 'Query Completed', data: result.recordset});
-            });
-        }
-    });
-});
-**/
-
-
-/**
-const pool1 = new sql.ConnectionPool(config1, err => {
-    if(err){
-        console.log(err);
-    }else{
-        console.log('Server Listening at port ' + config1.port);
-    }
-});
-**/
-
-//var sqlQuery1 = "Select * From EmailData;";
-//var sqlQuery1 = "SELECT * FROM  lkStatus;";
-//var sqlQuery1 = "Select * from UserLogin;";
-
-/**
-const pool1 = new sql.ConnectionPool(config1, err => {
-    if(!err){
-        pool1.request().query(sqlQuery1, (err, result) => {
-            if(err){
-                console.log('Query 1 Error: ' + err);
+app.post('/api/fullCloning', function(req,res){
+    secondaryPool.request()
+        .input('oldUser', sql.NVarChar(50), req.body.oldUser)
+        .input('newUser', sql.NVarChar(50), req.body.newUser)
+        .input('printOnly', sql.Bit, 0) //TODO change to 0
+        .input('ISnew', sql.Int, req.body.iSnew)
+        .input('ISSqlaunt', sql.Bit, req.body.IsSqlaunt)
+        .execute('[dbo].[sp_ClonePermsRights]', (err, data) =>{
+            if(!err){
+                console.dir(data);
+                return res.status(200).json( data.recordset );
+            }else{
+                return res.status(500).json({
+                    msg : 'Failed to Clone',
+                    err : err
+                });
             }
-    
-            console.log('RES.1: ' + result.recordsets[0].length);
         });
-    }else{
-        console.log("Connection Error.1: " + err.state + ' ' + err);
-    }
-
-  
 });
-
-pool1.on('error', err =>{
-    console.log('Connection 1 Error: ' + err);
-});
-**/
-/**
-var config2 = {
-    user: 'dbaph_dev',
-    password: 'projectROS2018',
-    //server: 'DVMXC021.dev.sprint.com',
-    server: 'DREWC049.dev.sprint.com',
-    //port: 2787,
-    port: 2784,
-    database: 'dba_ph_testDB',
-    options: {
-        encrypt: false
-    }
-}
-
-//var sqlQuery2 = "Select * From EmailData;";
-//var sqlQuery2 = "SELECT * FROM  lkStatus;";
-var sqlQuery2 = "Select * from UserLogin;";
-
-const pool2 = new sql.ConnectionPool(config2, err => {
-    if(!err){
-        pool2.request().query(sqlQuery2, (err, result) => {
-            if(err){
-                console.log('Query 2 Error: ' + err);
-            }
-    
-            console.log('RES.2: ' + result.recordsets[0].length);
-        });
-    }else{
-        console.log("Connection Error.2: " +  err);
-    }
-    
-});
-
-pool2.on('error', err =>{
-    console.log('Connection 2 Error: ' + err);
-});
-**/
-
-//query for get users
-//select * from master.sys.server_principals

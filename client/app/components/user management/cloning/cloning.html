@@ -55,9 +55,9 @@
     <div class="row text-center m-b-sm">
         <button type="button" class="btn btn-warning" id="btnCloning" 
             ng-disabled="ctrl.copyFromUser == null || ctrl.copyToUser == null"
-            ng-click="sureToClone(ctrl.copyFromUser)"
-            ladda="loginLoading" data-spinner-size="30" data-style="expand-right">
+            ng-click="sureToClone(ctrl.copyFromUser)">
                 {{ !cloningInProgress ? 'Start Cloning' : 'Cloning...' }}
+            <span class="loading dots" ng-if="cloningInProgress"></span>
         </button>
     </div>
     <div class="row text-center m-b-lg">
