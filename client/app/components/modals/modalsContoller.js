@@ -1,5 +1,5 @@
 angular.module("main")
-    .controller("ModalCtrl", function($scope, $http, session){
+    .controller("ModalCtrl", function($scope, $http, session, logs){
         $scope.onLoad = function(){
             $scope.modalLoader = false;
             $scope.errorMessage ='';
@@ -83,7 +83,7 @@ angular.module("main")
             $http.get('/api/serverDisconnect')
                 .then(function(res){
                     $scope.connectingToServer = false;
-                    console.log(res);
+                    logs.createLog('Disconnect to server ' + session.getServerName());
                     session.destroyServerSession();
                     $("#serverConnectModal").modal("hide");
                     clearForm();
@@ -120,6 +120,7 @@ angular.module("main")
                                 session.setServerDetails(response);
                                 session.setServerName($scope.serverNameFromUser);
                                 session.setServerInstance($scope.serverDetails.instances, $scope.ins);
+                                logs.createLog('Connect to server ' + $scope.serverNameFromUser);
 
                                 $("#serverConnectModal").modal("hide");
 
@@ -127,6 +128,7 @@ angular.module("main")
                         }
                     }).catch(function(err){
                         $scope.connectingToServer = false;
+                        logs.createLog('Failed to connect to server ' + $scope.serverNameFromUser);
                         errorServerName();
                         console.log(err);
                     });

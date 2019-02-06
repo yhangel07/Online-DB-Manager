@@ -1,5 +1,5 @@
 angular.module("main")
-    .controller("CloningCtrl1", function($scope, $http, $timeout){
+    .controller("CloningCtrl1", function($scope, $http, $timeout, logs){
         $scope.cloningInProgress = false;
         $scope.serverUsers = [];
         $scope.onLoad = function(){
@@ -63,7 +63,7 @@ angular.module("main")
                         $http.post('api/fullCloning', cloningParameter)
                             .then(function(res){
                                 toastr.success("Full Cloning Completed for " + user, "Cloning Status", { timeOut: 9500 });
-
+                                logs.createLog('Full Cloning of user ' + user + ' from user ' + $scope.userToClone);
                                 $scope.cloningInProgress = false;
                                 $scope.resetAll();
                                 
@@ -71,6 +71,7 @@ angular.module("main")
 
                             }).catch(function(err){
                                 toastr.danger(err, "Cloning Status");
+                                logs.createLog('Error Full Cloning of user ' + user + ' from user ' + $scope.userToClone);
                                 $scope.cloningInProgress = false;
 
                                 console.log('ERROR: ' + err);

@@ -1,6 +1,6 @@
 (function (angular){
 
-    function AuthService($http, session){
+    function AuthService($http, session, logs){
 
         /**
         *   check Logged In
@@ -34,12 +34,13 @@
         this.logOut = function(){
             return $http.get('/api/logout')
                 .then(function(res){
+                    logs.createLog('Logout');
                     session.destroy();
                 });
         };
     }
 
-    AuthService.$inject = ['$http', 'session'];
+    AuthService.$inject = ['$http', 'session', 'logs'];
 
     angular.module("main").service('auth', AuthService);
 })(angular);

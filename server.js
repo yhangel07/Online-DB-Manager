@@ -175,18 +175,10 @@ app.get('/api/serverDisconnect', function(req,res){
 
 
 app.get('/api/user', function(req,res){
-    //console.log(req.query);
-
-    // var getUserQuery ="select name from master.sys.server_principals where name like '" + req.query.searchString +"%'";
-
     var getUserQuery ="select * from sys.server_principals where (type='s' or type='u') and name <> 'sa'";
 
-
-    //TODO change to secondaryPool after development
     secondaryPool.request().query(getUserQuery, (err, data) => {
         if(!err){
-            // console.dir('User retrieve: ');
-            // console.dir(data);
             return res.status(200).json( data.recordset );
         }else{
             return res.status(500).json({
@@ -598,4 +590,19 @@ app.post('/api/fullCloning', function(req,res){
                 });
             }
         });
+});
+
+app.post('/api/insertLogs/', function(req, res){
+    var insertLogQuery = "Insert into odbm.logs (LoginName, activity, date_time) values ('" + req.body.username + "', '" + req.body.activity  +"', CURRENT_TIMESTAMP);"
+
+    mainPool.request().query(insertLogQuery, (err) => {
+        if(!err){
+            return res.status(200).send();
+        }else{
+            return res.status(500).json({
+                    msg : 'Failed to insert logs',
+                    err : err
+                });
+        }
+    });
 });

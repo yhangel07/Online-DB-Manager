@@ -3,7 +3,6 @@ angular.module("main")
 
         $scope.logOutApp = function(){
             auth.logOut().then(function(){
-                //console.log(res);
                 $state.go('login');
             });
         }
