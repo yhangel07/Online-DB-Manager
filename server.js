@@ -606,3 +606,72 @@ app.post('/api/insertLogs/', function(req, res){
         }
     });
 });
+
+var getDrivePhysicalSizeQuery =
+`
+SET NOCOUNT ON
+
+DECLARE @varSQL varchar(1000), @varDrive varchar(10)
+
+CREATE TABLE #tmpDriveSpaceInfo
+(drive varchar(10),
+xpFixedDrive_FreeSpace_MB bigint,
+FSutil_FreeSpace_Bytes integer,
+FSutil_Space_Bytes integer
+)
+
+CREATE TABLE #tmpFSutilDriveSpaceInfo
+(drive varchar(10),
+info varchar(50)
+)
+
+INSERT INTO #tmpDriveSpaceInfo (drive, xpFixedDrive_FreeSpace_MB)
+EXEC master..xp_fixeddrives
+
+DECLARE CUR_DriveLooper CURSOR FOR SELECT drive FROM #tmpDriveSpaceInfo
+
+OPEN CUR_DriveLooper
+FETCH NEXT FROM CUR_DriveLooper INTO @varDrive
+WHILE @@FETCH_STATUS = 0
+BEGIN
+SET @varSQL = 'EXEC master..XP_CMDSHELL ' + ''''+ 'fsutil volume diskfree ' + @varDrive + ':' + ''''
+INSERT INTO #tmpFSutilDriveSpaceInfo (info)
+EXEC(@varSQL)
+UPDATE #tmpFSutilDriveSpaceInfo SET drive = @varDrive WHERE drive IS NULL
+FETCH NEXT FROM CUR_DriveLooper INTO @varDrive
+END
+
+DELETE FROM #tmpFSutilDriveSpaceInfo WHERE info IS NULL
+
+SELECT drive,
+ltrim(rtrim(left(info,29))) as InfoType,
+ltrim(rtrim(substring (info, charindex (':',info) + 2, 20))) as Size_Bytes
+INTO #tmpFSutilDriveSpaceInfo_Fixed
+FROM #tmpFSutilDriveSpaceInfo
+
+SELECT a.drive,
+(SELECT cast(Size_Bytes /1073741824.0E AS DECIMAL(10, 3)) FROM #tmpFSutilDriveSpaceInfo_Fixed WHERE drive = a.drive and InfoType = 'Total # of free bytes') AS freeSpace_GB,
+(SELECT cast(Size_Bytes /1073741824.0E AS DECIMAL(10, 3)) FROM #tmpFSutilDriveSpaceInfo_Fixed WHERE drive = a.drive and InfoType = 'Total # of bytes') AS totalSpace_GB
+FROM #tmpDriveSpaceInfo a
+
+
+CLOSE CUR_DriveLooper
+DEALLOCATE CUR_DriveLooper
+DROP TABLE #tmpFSutilDriveSpaceInfo
+DROP TABLE #tmpDriveSpaceInfo
+DROP TABLE #tmpFSutilDriveSpaceInfo_Fixed
+`;
+
+app.get('/api/drivePhysicalSize', function(req, res){
+
+    secondaryPool.request().query(getDrivePhysicalSizeQuery, (err, data) => {
+        if(!err){
+            return res.status(200).json( data.recordset );
+        }else{
+            return res.status(500).json({
+                msg : 'Failed to retrieve Physical Size',
+                err : err
+            });
+        }
+   });
+});

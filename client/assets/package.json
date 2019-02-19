@@ -20,6 +20,7 @@
     "metismenu": "^3.0.3",
     "normalize.css": "^7.0.0",
     "pace": "0.0.4",
+    "tc-angular-chartjs": "^2.1.4",
     "text-spinners": "^1.0.5"
   },
   "devDependencies": {

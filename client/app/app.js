@@ -1,5 +1,5 @@
 
-var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'angular-ladda']);
+var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'angular-ladda', 'tc.chartjs']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     var dirPath = "../app/components/";
@@ -101,6 +101,9 @@ app.config(function($stateProvider, $urlRouterProvider){
         }).state('app.dashboard.provisioning', {
                 templateUrl: dirPath + 'user management/provisioning/provisioning.html',
                 controller: ''
+        }).state('app.dashboard.databaseMonitoring', {
+            templateUrl: dirPath + 'monitoring/monitoring.html',
+            controller: 'MonitoringCtrl'
         });
     
 }).run(function($rootScope, $state, $stateParams){

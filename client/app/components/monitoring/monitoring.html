@@ -1,0 +1,19 @@
+<div class="row white-bg p-lg" ng-init="onload()">
+        <h2>Server Physical Disk Space</h2>
+        <!--
+        <div class="row m m-b-lg"  ng-repeat="drive in drives" ng-if="$index % 3 == 0" >
+                <div class="col-xs-4" ng-repeat="drive in drives.slice($index, ($index+3 > drives.length ? drives.length : $index+3))">
+                        <h4>Drive {{ drive.drive }}: ({{ drive.percentage }}% free of {{ drive.totalSpace_GB }})</h4>
+                        <canvas tc-chartjs-pie chart-data="drive.driveData" chart-options="pieOptions"></canvas>
+                </div>
+        </div>
+-->
+        <div class="row m">
+                <div class="col-lg-6 p-lg">
+                        <canvas tc-chartjs-bar chart-data="driveData" chart-options="barOptions"></canvas>
+                </div>
+                <div class="col-lg-6 p-lg">
+                        <canvas tc-chartjs-horizontalbar chart-data="driveData" chart-options="hbarOptions"></canvas>
+                </div>
+        </div>
+</div>
