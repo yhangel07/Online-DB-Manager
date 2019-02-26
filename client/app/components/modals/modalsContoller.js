@@ -97,6 +97,7 @@ angular.module("main")
         var connectToServer = function(serverName, serverInstance){
             if(!session.getPw()){
                 $("#getPasswordFromModal").modal({ backdrop : 'static' },"show");
+                $("#serverPasswordFromModal").focus();
             }else{
                 $scope.connectingToServer = true;
 

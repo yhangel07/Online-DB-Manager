@@ -675,3 +675,108 @@ app.get('/api/drivePhysicalSize', function(req, res){
         }
    });
 });
+
+var getCpuQuery =
+    `
+    SELECT TOP 50
+        ObjectName          = OBJECT_SCHEMA_NAME(qt.objectid,dbid) + '.' + OBJECT_NAME(qt.objectid, qt.dbid)
+        ,TextData           = qt.text
+        ,DiskReads          = qs.total_physical_reads   -- The worst reads, disk reads
+        ,MemoryReads        = qs.total_logical_reads    --Logical Reads are memory reads
+        ,Executions         = qs.execution_count
+        ,TotalCPUTime       = qs.total_worker_time
+        ,AverageCPUTime     = qs.total_worker_time/qs.execution_count
+        ,DiskWaitAndCPUTime = qs.total_elapsed_time
+        ,MemoryWrites       = qs.max_logical_writes
+        ,DateCached         = qs.creation_time
+        ,DatabaseName       = DB_Name(qt.dbid)
+        ,LastExecutionTime  = qs.last_execution_time
+    FROM sys.dm_exec_query_stats AS qs
+    CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS qt
+    ORDER BY qs.total_worker_time DESC
+    `;
+
+app.get('/api/getMostCPU', function(req,res){
+    secondaryPool.request().query(getCpuQuery, (err, data) => {
+        if(!err){
+            return res.status(200).json( data.recordset );
+        }else{
+            return res.status(500).json({
+                msg: 'Failed to retrieve CPU records',
+                err: err
+            });
+        }
+    });
+});
+
+var checkLUNQuery =
+    `
+        declare @svrName varchar(255)
+        declare @sql varchar(400)
+        --by default it will take the current server name, we can the set the server name as well
+        set @svrName = CONVERT(VARCHAR(128),SERVERPROPERTY('machinename') )
+        set @sql = 'powershell.exe -c "Get-WmiObject -ComputerName ' + QUOTENAME(@svrName,'''') + ' -Class Win32_Volume -Filter ''DriveType = 3'' | select name,capacity,freespace | foreach{$_.name+''|''+$_.capacity/1048576+''%''+$_.freespace/1048576+''*''}"'
+        --creating a temporary table
+        CREATE TABLE #output
+        (line varchar(255))
+        --inserting disk name, total space and free space value in to temporary table
+        insert #output
+        EXEC xp_cmdshell @sql
+    
+        --script to retrieve the values in GB from PS Script output
+        select rtrim(ltrim(SUBSTRING(line,1,CHARINDEX('|',line) -1))) as drivename
+            ,round(cast(rtrim(ltrim(SUBSTRING(line,CHARINDEX('|',line)+1,
+            (CHARINDEX('%',line) -1)-CHARINDEX('|',line)) )) as Float)/1024,0) as 'capacity(GB)'
+            ,round(cast(rtrim(ltrim(SUBSTRING(line,CHARINDEX('%',line)+1,
+            (CHARINDEX('*',line) -1)-CHARINDEX('%',line)) )) as Float) /1024 ,0)as 'freespace(GB)'
+            ,round(cast(rtrim(ltrim(SUBSTRING(line,CHARINDEX('|',line)+1,
+            (CHARINDEX('%',line) -1)-CHARINDEX('|',line)) )) as Float),0) as 'capacity(MB)'
+            ,round(cast(rtrim(ltrim(SUBSTRING(line,CHARINDEX('%',line)+1,
+            (CHARINDEX('*',line) -1)-CHARINDEX('%',line)) )) as Float),0) as 'freespace(MB)'
+        from #output
+        where line like '[A-Z][:]%'
+        order by drivename
+        --script to drop the temporary table
+        drop table #output
+    `;
+app.get('/api/checkLUN', function(req,res){
+    secondaryPool.request().query(checkLUNQuery, (err, data) => {
+        if(!err){
+            return res.status(200).json( data.recordset );
+        }else{
+            return res.status(500).json({
+                msg: 'Failed to retrieve LUN records',
+                err: err
+            });
+        }
+    });
+});
+
+var longRunningQuery = 
+    `
+        SELECT DISTINCT TOP 10
+        t.TEXT QueryName,
+        s.execution_count AS ExecutionCount,
+        s.max_elapsed_time AS MaxElapsedTime,
+        ISNULL(s.total_elapsed_time / s.execution_count, 0) AS AvgElapsedTime,
+        s.creation_time AS LogCreatedOn,
+        ISNULL(s.execution_count / DATEDIFF(s, s.creation_time, GETDATE()), 0) AS FrequencyPerSec
+        FROM sys.dm_exec_query_stats s
+        CROSS APPLY sys.dm_exec_sql_text( s.sql_handle ) t
+        ORDER BY
+        s.max_elapsed_time DESC
+    `;
+
+    app.get('/api/checkLongRunning', function(req,res){
+        secondaryPool.request().query(longRunningQuery, (err, data) => {
+            if(!err){
+                return res.status(200).json( data.recordset );
+            }else{
+                console.dir(err);
+                return res.status(500).json({
+                    msg: 'Failed to retrieve long Running records',
+                    err: err
+                });
+            }
+        });
+    });

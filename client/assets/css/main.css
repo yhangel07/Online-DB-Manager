@@ -1,6 +1,22 @@
 .sprint_bg_color{
     background-color: #FEE100;
 }
+/** Override row alternate color */
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th {
+    background-color: rgba(247, 166, 74, 0.5);
+}
+
+td {
+        padding: 5px;
+        width: 2px;
+        white-space: nowrap;
+}
+
+th{
+    vertical-align: middle !important;
+    text-align: center;
+}
 
 /* Override Select2 multiple selected */
 .select2-container--default 

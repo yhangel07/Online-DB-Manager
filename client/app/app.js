@@ -1,5 +1,5 @@
 
-var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'angular-ladda', 'tc.chartjs']);
+var app = angular.module("App",['modules', 'ui.router', 'ngSanitize', 'angular-ladda', 'tc.chartjs', 'datatables', 'ngResource', 'datatables.bootstrap']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     var dirPath = "../app/components/";
@@ -104,6 +104,12 @@ app.config(function($stateProvider, $urlRouterProvider){
         }).state('app.dashboard.databaseMonitoring', {
             templateUrl: dirPath + 'monitoring/monitoring.html',
             controller: 'MonitoringCtrl'
+        }).state('app.dashboard.cpu', {
+            templateUrl: dirPath + 'monitoring/cpu/cpu.html',
+            controller: 'CPUCtrl'
+        }).state('app.dashboard.longRunning', {
+            templateUrl: dirPath + 'monitoring/long running/longRunning.html',
+            controller: 'longRunningCtrl'
         });
     
 }).run(function($rootScope, $state, $stateParams){
