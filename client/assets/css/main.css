@@ -4,8 +4,10 @@
 /** Override row alternate color */
 .table-striped tbody tr:nth-child(odd) td,
 .table-striped tbody tr:nth-child(odd) th {
-    background-color: rgba(247, 166, 74, 0.5);
+    /* background-color: rgba(247, 166, 74, 0.5); */
+    background-color: #c7c8ca;
 }
+
 
 td {
         padding: 5px;

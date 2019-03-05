@@ -15,7 +15,9 @@ angular.module("main")
                 });
 
                 return defer.promise;
-            }).withBootstrap().withPaginationType('simple_numbers');
+            }).withBootstrap().withPaginationType('simple_numbers')
+            .withDOM("<'row m-t-lg'<'col-sm-9'i><'col-sm-3'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-10'><'col-sm-2'p>>");
+
 
             $scope.dtColumns = [
                 DTColumnBuilder.newColumn('QueryName').withTitle('Query Name').renderWith($.fn.dataTable.render.ellipsis(100)),

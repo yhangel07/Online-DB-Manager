@@ -34,6 +34,8 @@
                 </a>
                 <ul class="nav nav-second-level" aria-expanded="false" ng-class="">
                     <li ui-sref-active="active">
+                        <a ui-sref=".newUser">List of Users</a></li>
+                    <li ui-sref-active="active">
                         <a ui-sref=".newUser">New User</a></li>
                     <li ui-sref-active="active">
                         <a ui-sref=".cloning">Cloning Tool</a></li>
@@ -48,13 +50,16 @@
                 </a>
                 <ul class="nav nav-second-level" aria-expanded="false" ng-class="">
                     <li ui-sref-active="active">
-                        <a ui-sref=".databaseMonitoring">Database Monitoring</a>
+                        <a ui-sref=".databaseMonitoring">Disk Space</a>
                     </li>
                     <li ui-sref-active="active">
-                        <a ui-sref=".cpu">CPU</a>
+                        <a ui-sref=".cpu">Highest CPU Usage</a>
                     </li>
                     <li ui-sref-active="active">
-                        <a ui-sref=".longRunning">Long Running</a>
+                        <a ui-sref=".longRunning">Long Running Sessions</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref=".activeSessions">Active Sessions</a>
                     </li>
                 </ul>
             </li>
