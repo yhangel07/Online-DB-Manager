@@ -1,9 +1,10 @@
 angular.module("main")
-    .controller("MonitoringCtrl", function($scope, $http){
+    .controller("MonitoringCtrl", function($scope, $http, api){
 
         $scope.onload = function(){
 
-            $http.get('/api/drivePhysicalSize')
+           // $http.get('/api/drivePhysicalSize')
+           api.getDiskSpace()
                 .then(function(obj){
                     $scope.drives = obj.data;
                     $scope.driveData = {

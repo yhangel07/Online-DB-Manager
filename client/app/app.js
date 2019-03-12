@@ -36,7 +36,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             views: {
                 '': { 
                     templateUrl: dirPath + 'dashboard/dashboard.html',
-                    controller: 'DashboardCtrl',
+                    controller: 'MainCtrl'
                 },
                 'navigation@app.dashboard': {
                     templateUrl: dirPath + 'navigation/navigation.html',
@@ -72,9 +72,9 @@ app.config(function($stateProvider, $urlRouterProvider){
                     });
                 }
             }
-        }).state('app.dashboard.mainComponent', {
+        }).state('app.dashboard.dashboard-view', {
             url: '',
-            templateUrl: dirPath + 'dashboard/mainComponent.html',
+            templateUrl: dirPath + 'dashboard/dashboard-view.html',
             resolve: {
                 childState: function ($state, $q, $rootScope){
 
@@ -90,7 +90,7 @@ app.config(function($stateProvider, $urlRouterProvider){
                 }
             },
             //abstract: true,
-            controller: '',
+            controller: 'DashboardCtrl'
             
         }).state('app.dashboard.cloning', {
             templateUrl: dirPath + 'user management/cloning/cloning.html',

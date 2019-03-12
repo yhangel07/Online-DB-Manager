@@ -3,5 +3,45 @@
     <div class="row m">
         <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" 
             class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+            
+            <!--
+            <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="dtColumnDefs"
+                class="table table-condensed table-striped table-bordered fit" style="width:100%">
+            
+                <thead>
+                        <tr>
+                            <th>ObjectName</th>
+                            <th>Textdata</th>
+                            <th>DiskReads</th>
+                            <th>MemoryReads</th>
+                            <th>Executions</th>
+                            <th>TotalCPUTime</th>
+                            <th>AverageCPUTime</th>
+                            <th>DiskWaitAndCPUTime</th>
+                            <th>MemoryWrites</th>
+                            <th>DateCached</th>
+                            <th>DatabaseName</th>
+                            <th>LastExecutionTime</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="cpu in highCPU">
+                            <td>{{ cpu.ObjectName }}</td>
+                            <td>{{ cpu.TextData }}</td>
+                            <td>{{ cpu.DiskReads }}</td>
+                            <td>{{ cpu.MemoryReads }}</td>
+                            <td>{{ cpu.Executions }}</td>
+                            <td>{{ cpu.TotalCPUTime }}</td>
+                            <td>{{ cpu.AverageCPUTime }}</td>
+                            <td>{{ cpu.DiskWaitAndCPUTime }}</td>
+                            <td>{{ cpu.MemoryWrites }}</td>
+                            <td>{{ cpu.DateCached }}</td>
+                            <td>{{ cpu.DatabaseName }}</td>
+                            <td>{{ cpu.LastExecutionTime }}</td>
+                        </tr>
+                        </tbody>
+
+            </table>
+        -->
     </div>
 </div>

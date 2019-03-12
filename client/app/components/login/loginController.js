@@ -19,7 +19,7 @@ angular.module("main")
                                     session.setServerStatus('Disconnected');
                                     session.setPw($scope.credentials.password);
                                     logs.createLog('Login');
-                                    $state.go('app.dashboard.mainComponent');
+                                    $state.go('app.dashboard.dashboard-view');
                                 }, 2);
                             }else{
                                 console.log('Inactive');

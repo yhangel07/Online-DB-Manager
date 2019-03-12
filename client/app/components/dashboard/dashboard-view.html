@@ -1,0 +1,143 @@
+<!-- TODO remove comment after dev -->
+<div class="middle-box text-center animated fadeInDown" ng-hide="$root.session.getServerDetails()">
+    <h1><i class="fa fa-chain-broken" aria-hidden="true"></i></h1>
+    <h3 class="font-bold">Server Disconnected</h3>
+
+    <div class="error-desc">
+        Sorry, but all features are disabled until you connect to server
+        <a href="../modals/modals.html/#serverConnectModal" data-toggle="modal" data-backdrop="static">
+            <h4 class="text-warning">Connect to Server</h4>
+        </a>
+    </div>
+</div> 
+
+<!--
+<div ng-show="$root.session.getServerDetails()">
+    <div class="row m">
+        <a class="col-lg-4" ui-sref=".newUser">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fa fa-user-plus fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">Create User</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-lg-4" ui-sref=".cloning">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fas fa-user-friends fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">Cloning Tool</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-lg-4" ui-sref=".provisioning">
+            <div class="widget style1 yellow-bg h-100-px">
+                <div class="row row-eq-height">
+                    <div class="col-lg-4">
+                        <i class="fas fa-user-cog fa-5x"></i>
+                    </div>
+                    <div class="col-lg-8 text-right v-align">
+                        <h2 class="font-bold">User Provisioning</h2>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+
+</div>
+-->
+
+<!-- <div ng-show="$root.session.getServerDetails()"> -->
+        <div ng-if="$root.session.getServerDetails() !== null" ng-init="callApi()">
+   
+    <!-- <div class="sidebar-panel">
+        <div class="m">
+            <h4>List of Users</h4>
+            <div>
+    
+            </div>
+        </div>
+    </div> -->
+
+    <div class="wrapper wrapper-content">
+        <!-- Disk Space -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h3 class="m-b-xs font-bold pull-left">
+                            Disk Space & Current Space Usage
+                        </h3>
+                        <span class="pull-right" style="cursor: pointer" ng-click="diskSpace()">
+                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="ibox-content p-lg">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <canvas tc-chartjs-horizontalbar chart-data="driveData" chart-options="hbarOptions"></canvas>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="m">
+                                    <table datatable="" dt-options="dtOptionsInfo" dt-columns="dtColumnsInfo" dt-instance="dtInstanceInfo"   
+                                    class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    <p class="text-center m-t-lg"><a>See more</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h3 class="m-b-xs font-bold pull-left">
+                            Top 3 Highest CPU Usage
+                        </h3>
+                        <span class="pull-right" style="cursor: pointer" ng-click="dtInstance.rerender()">
+                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="">
+                            <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance"   
+                            class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                        </div>
+                        <p class="text-center"><a>See more</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-title">    
+                        <h3 class="m-b-xs font-bold pull-left">
+                            Top 3 Long Running Query
+                        </h3>
+                        <span class="pull-right" style="cursor: pointer" ng-click="dtInstanceLong.rerender()">
+                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="">
+                            <table datatable="" dt-options="dtOptionsLong" dt-columns="dtColumnsLong" dt-instance="dtInstanceLong"   
+                            class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                        </div>
+                        <p class="text-center"><a>See more</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,7 +6,7 @@ angular.module("main")
             $http.get('/api/user')
                 .then(function(res){
                     angular.forEach(res.data, function(user){
-                        $scope.serverUsers.push(user.name);
+                        if(user.type != 'G')  $scope.serverUsers.push(user.name);
                     });
                     //$scope.serverUsers = res.data;
                 }).catch(function(err){

@@ -8,6 +8,16 @@
     background-color: #c7c8ca;
 }
 
+/** Added style for dashboard*/
+.sidebar-panel {
+    width: 320px;
+    background: #ebebed;
+    padding: 10px 20px;
+    position: absolute;
+    right: 0;
+    min-height: 90%;
+    /* height: auto !important; */
+}
 
 td {
         padding: 5px;
