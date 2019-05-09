@@ -104,7 +104,7 @@ app.post('/api/server', function(req,res){
     var secondaryConfig = {
         user: req.body.user,
         password: req.body.pw,
-        //password: 'projectROS2018',
+        
         port: req.body.portNumber,
        // port: 2767,
         server: req.body.server,
