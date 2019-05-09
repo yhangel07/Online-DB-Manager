@@ -27,10 +27,10 @@ app.get('/', function(req,res){
 
 app.listen(port);
 console.log("App Listening on port 8080");
-
+/**
 var mainConfig = {
     user: 'odbm_user',
-    password: 'pass1234$$',
+    
     port: 2767,
     server: 'DVMXC021.dev.sprint.com',
     //server: 'ISD-PF0ZH0N5',
@@ -40,7 +40,7 @@ var mainConfig = {
         //instanceName: 'MS_TEST'
     }
 }
-
+**/
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
         console.dir(err);
