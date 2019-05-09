@@ -21,6 +21,10 @@
                     console.log('Error logging: ' , err);
                 });
         };
+
+        this.getLogs = function(){
+            return $http.get('/api/getlogs');
+        };
     }
 
     LogsService.$inject = ['$http', 'session'];

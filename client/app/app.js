@@ -74,7 +74,7 @@ app.config(function($stateProvider, $urlRouterProvider){
             }
         }).state('app.dashboard.dashboard-view', {
             url: '',
-            templateUrl: dirPath + 'dashboard/dashboard-view.html',
+            templateUrl: dirPath + 'dashboard/dashboard-view2.html',
             resolve: {
                 childState: function ($state, $q, $rootScope){
 
@@ -110,6 +110,9 @@ app.config(function($stateProvider, $urlRouterProvider){
         }).state('app.dashboard.longRunning', {
             templateUrl: dirPath + 'monitoring/long running/longRunning.html',
             controller: 'longRunningCtrl'
+        }).state('app.dashboard.appLogs', {
+            templateUrl: dirPath + 'settings/logs/appLogs.html',
+            controller: 'appLogsCtrl'
         });
     
 }).run(function($rootScope, $state, $stateParams){

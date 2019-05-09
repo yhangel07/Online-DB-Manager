@@ -1,0 +1,102 @@
+<!-- TODO remove comment after dev -->
+<div class="middle-box text-center animated fadeInDown" ng-hide="$root.session.getServerDetails()">
+    <h1><i class="fa fa-chain-broken" aria-hidden="true"></i></h1>
+    <h3 class="font-bold">Server Disconnected</h3>
+
+    <div class="error-desc">
+        Sorry, but all features are disabled until you connect to server
+        <a href="../modals/modals.html/#serverConnectModal" data-toggle="modal" data-backdrop="static">
+            <h4 class="text-warning">Connect to Server</h4>
+        </a>
+    </div>
+</div> 
+
+
+
+<!-- <div ng-show="$root.session.getServerDetails()"> -->
+<div ng-if="$root.session.getServerDetails() !== null" ng-init="callApi()">
+   
+    <!-- <div class="sidebar-panel">
+        <div class="m">
+            <h4>List of Users</h4>
+            <div>
+    
+            </div>
+        </div>
+    </div> -->
+
+    <div class="wrapper wrapper-content">
+        <!-- Disk Space -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h3 class="m-b-xs font-bold pull-left">
+                            Disk Space & Current Space Usage
+                        </h3>
+                        <span class="pull-right" style="cursor: pointer" ng-click="diskSpace()">
+                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="ibox-content p-lg">
+                        <div class="row">
+                            <canvas tc-chartjs-horizontalbar chart-data="driveData" chart-options="hbarOptions"></canvas>
+                        </div>
+                        <div class="row">
+                            <div class="m">
+                                    <table datatable="" dt-options="dtOptionsInfo" dt-columns="dtColumnsInfo" dt-instance="dtInstanceInfo"   
+                                    class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                            </div>
+                        </div>
+                    <p class="text-center"><a>See more</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="row">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h3 class="m-b-xs font-bold pull-left">
+                                            Top 3 Highest CPU Usage
+                                        </h3>
+                                        <span class="pull-right" style="cursor: pointer" ng-click="dtInstance.rerender()">
+                                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="">
+                                            <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance"   
+                                            class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                                        </div>
+                                        <p class="text-center"><a ui-sref=".cpu">See more</a></p>
+                                    </div>
+                                </div>
+                </div>
+                <div class="row">
+                                <div class="ibox">
+                                    <div class="ibox-title">    
+                                        <h3 class="m-b-xs font-bold pull-left">
+                                            Top 3 Long Running Query
+                                        </h3>
+                                        <span class="pull-right" style="cursor: pointer" ng-click="dtInstanceLong.rerender()">
+                                            <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="">
+                                            <table datatable="" dt-options="dtOptionsLong" dt-columns="dtColumnsLong" dt-instance="dtInstanceLong"   
+                                            class="table table-condensed table-striped table-bordered fit" style="width:100%"></table>
+                                        </div>
+                                        <p class="text-center"><a>See more</a></p>
+                                    </div>
+                                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+        
+    </div>
+</div>

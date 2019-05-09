@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var port = process.env.PORT || 8080;
 
@@ -28,18 +29,9 @@ app.get('/', function(req,res){
 app.listen(port);
 console.log("App Listening on port 8080");
 
-var mainConfig = {
-    user: 'odbm_user',
-    password: 'pass1234$$',
-    port: 2767,
-    server: 'DVMXC021.dev.sprint.com',
-    //server: 'ISD-PF0ZH0N5',
-    database: 'SQLMonitor',
-    options: {
-        encrypt: false
-        //instanceName: 'MS_TEST'
-    }
-}
+
+var rawdata = fs.readFileSync('../config.json');  
+var mainConfig = JSON.parse(rawdata);  
 
 const mainPool = new sql.ConnectionPool(mainConfig, err => {
     if(err){
@@ -119,7 +111,7 @@ app.post('/api/server', function(req,res){
 
     secondaryPool = new sql.ConnectionPool(secondaryConfig, err => {
         if(err){
-            console.log("Connection Error at Secondary pool: " + err.state + ' ' + err);
+            console.log("Connection Error at Secondary pool: " + err);
             return res.status(500).json({
                 msg: 'Failed to Connect to Secondary Server',
                 err: err
@@ -604,6 +596,21 @@ app.post('/api/insertLogs/', function(req, res){
                     msg : 'Failed to insert logs',
                     err : err
                 });
+        }
+    });
+});
+
+app.get('/api/getLogs/', function(req,res){
+    var getLogs = "Select * from odbm.logs";
+
+    mainPool.request().query(getLogs, (err, data) =>{
+        if(!err){
+            return res.status(200).json( data.recordset );
+        }else{
+            return res.status.json({
+                msg: 'Failed to retreive logs',
+                err: err
+            });
         }
     });
 });

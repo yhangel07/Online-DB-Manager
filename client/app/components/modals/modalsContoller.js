@@ -132,6 +132,8 @@ angular.module("main")
                         logs.createLog('Failed to connect to server ' + $scope.serverNameFromUser);
                         errorServerName();
                         console.log(err);
+                        toastr.warning(err.data.msg, err.data.err.name);
+
                     });
             }
         };
